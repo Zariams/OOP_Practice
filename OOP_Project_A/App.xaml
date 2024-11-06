@@ -1,7 +1,7 @@
-﻿<Application x:Class="OOP_Project_A.App"
+﻿<Application x:Class="OOP_Practice.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:OOP_Project_A"
+             xmlns:local="clr-namespace:OOP_Practice"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          

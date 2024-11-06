@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace OOP_Project_A
+namespace OOP_Practice
 {
     /// <summary>
     /// Логика взаимодействия для App.xaml

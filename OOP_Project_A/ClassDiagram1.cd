@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
-  <Class Name="OOP_Project_A.Hotel">
+  <Class Name="OOP_Practice.Hotel">
     <Position X="5.75" Y="0.5" Width="5.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAACAAAAAIAAAAIAAAQCQAAAAAACQAAAAAAAgAA=</HashCode>
@@ -10,7 +10,7 @@
       <Property Name="Tenants" />
     </ShowAsCollectionAssociation>
   </Class>
-  <Class Name="OOP_Project_A.HotelRoom">
+  <Class Name="OOP_Practice.HotelRoom">
     <Position X="12.25" Y="1.25" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAEACAAAAAAAAAAAAAAACAAAAAAAAAQAAAAAAAAE=</HashCode>
@@ -21,7 +21,7 @@
       <Property Name="Hotel" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="OOP_Project_A.Tenant">
+  <Class Name="OOP_Practice.Tenant">
     <Position X="3.5" Y="1.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAEA=</HashCode>
@@ -31,7 +31,7 @@
       <Property Name="Account" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="OOP_Project_A.Account">
+  <Class Name="OOP_Practice.Account">
     <Position X="0.5" Y="1.25" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAgAAAAEAAAACAAAAAAABAAAAAI=</HashCode>
@@ -42,7 +42,7 @@
     </ShowAsAssociation>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="OOP_Project_A.Reservation">
+  <Class Name="OOP_Practice.Reservation">
     <Position X="7.5" Y="5.75" Width="4" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAEAEAAA=</HashCode>
@@ -52,14 +52,14 @@
       <Property Name="Tenant" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="OOP_Project_A.App" Collapsed="true">
+  <Class Name="OOP_Practice.App" Collapsed="true">
     <Position X="12.25" Y="9.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>App.xaml.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="OOP_Project_A.MainWindow" Collapsed="true" BaseTypeListCollapsed="true">
+  <Class Name="OOP_Practice.MainWindow" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="14" Y="9.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
@@ -67,33 +67,33 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="OOP_Project_A.Properties.Resources" Collapsed="true">
+  <Class Name="OOP_Practice.Properties.Resources" Collapsed="true">
     <Position X="12.25" Y="10.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
     </TypeIdentifier>
   </Class>
-  <Class Name="OOP_Project_A.Properties.Settings" Collapsed="true">
+  <Class Name="OOP_Practice.Properties.Settings" Collapsed="true">
     <Position X="14" Y="10.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
   </Class>
-  <Interface Name="OOP_Project_A.IBankAccount">
+  <Interface Name="OOP_Practice.IBankAccount">
     <Position X="2.5" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAI=</HashCode>
       <FileName>IBankAccount.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Enum Name="OOP_Project_A.RoomType">
+  <Enum Name="OOP_Practice.RoomType">
     <Position X="15.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAEAAAAAAAAAAAAAAAIQAAAAAAAAAAAAAgAA=</HashCode>
       <FileName>RoomType.cs</FileName>
     </TypeIdentifier>
   </Enum>
-  <Enum Name="OOP_Project_A.AccountState">
+  <Enum Name="OOP_Practice.AccountState">
     <Position X="0.5" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAACAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAgAAA=</HashCode>

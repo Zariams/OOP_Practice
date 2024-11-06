@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace OOP_Project_A
+namespace OOP_Practice
 {
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml

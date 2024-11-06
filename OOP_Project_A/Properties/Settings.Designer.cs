@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace OOP_Project_A.Properties
+namespace OOP_Practice.Properties
 {
 
 
