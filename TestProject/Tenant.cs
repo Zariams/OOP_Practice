@@ -30,8 +30,8 @@ namespace TestProject
             //Arrange
             string name1 = "12345";
             string name2 = "A";
-            string name3 = "_____";
-            string name4 = "";
+            string name3 = "Джон";
+            string name4 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa";
             DateTime birthdate = new DateTime(1980, 1, 1);
             //Act + Assert
             Assert.ThrowsException<ArgumentException>(() => new Tenant(name1, birthdate));
