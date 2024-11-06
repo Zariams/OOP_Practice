@@ -44,6 +44,10 @@ namespace OOP_Practice
         {
             throw new NotImplementedException();
         }
+        public void RegisterNewRoom(HotelRoom room)
+        {
+            throw new NotImplementedException();
+        }
         public void WithdrawDailyFee()
         {
             throw new NotImplementedException();
