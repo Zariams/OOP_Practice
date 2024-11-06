@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace OOP_Practice
 {
     public enum AccountState
     {
         Active,
-        Inactive,
-        Frozen
+        Inactive
     }
 }

@@ -13,7 +13,7 @@
   <Class Name="OOP_Practice.HotelRoom">
     <Position X="12.25" Y="1.25" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAEACAAAAAAAAAAAAAAACAAAAAAAAAQAAAAAAAAE=</HashCode>
+      <HashCode>AAAAAEACAAAAAAAAAAAAAAACAQAAAAAAAQAAAIAAAAE=</HashCode>
       <FileName>HotelRoom.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -37,15 +37,12 @@
       <HashCode>AAAAAAAAAAAAAAAAAAgAAAAEAAAACAAAAAAABAAAAAI=</HashCode>
       <FileName>Account.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="State" />
-    </ShowAsAssociation>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="OOP_Practice.Reservation">
     <Position X="7.5" Y="5.75" Width="4" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAEAEAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAgAAAAAAAAAAAAAEAEAAA=</HashCode>
       <FileName>Reservation.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -96,7 +93,7 @@
   <Enum Name="OOP_Practice.AccountState">
     <Position X="0.5" Y="4.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAACAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAgAAA=</HashCode>
+      <HashCode>AAAACAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAA=</HashCode>
       <FileName>AccountState.cs</FileName>
     </TypeIdentifier>
   </Enum>

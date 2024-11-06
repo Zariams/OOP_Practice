@@ -7,9 +7,9 @@ namespace OOP_Practice
 {
     public class Tenant
     {
-        public string Name { get; set; }
-        public DateTime BirthDate {  get; set; } 
-        public Account Account { get; set; }
+        public string Name { get; private set; }
+        public DateTime BirthDate {  get; private set; } 
+        public Account Account { get; private set; }
 
         public Tenant(string name, DateTime birthDate) {
             throw new NotImplementedException();
