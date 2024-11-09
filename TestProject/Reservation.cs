@@ -29,7 +29,7 @@ namespace TestProject
             Assert.AreEqual(tenantID, reservation.TenantID);
             Assert.AreEqual(roomID, reservation.RoomID);
             Assert.IsTrue(reservation.IsActiveToday);
-
+            Assert.IsFalse(reservation.IsDeleted);
         }
         [TestMethod]
         public void ConstructorTest_correct_Inactive()
@@ -49,7 +49,7 @@ namespace TestProject
             Assert.AreEqual(tenantID, reservation.TenantID);
             Assert.AreEqual(roomID, reservation.RoomID);
             Assert.IsFalse(reservation.IsActiveToday);
-
+            Assert.IsFalse(reservation.IsDeleted);
         }
         [TestMethod]
         public void ConstructorTest_incorrect_StartDate()
