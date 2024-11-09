@@ -14,7 +14,7 @@ namespace OOP_Practice
        // public Dictionary<HotelRoom,List<Reservation>> Rooms { get; private set; }
        // public Account HotelFunds { get; set; }
         public List<Room> Rooms { get; set; }
-        public List<Reservation> Reservations { get; set; }
+         public List<Reservation> Reservations { get; set; }
 
         public Hotel(string name, string address)
         {

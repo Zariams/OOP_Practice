@@ -9,10 +9,12 @@ namespace OOP_Practice
     {
         public DateTime StartDate { get; private set; }
         public DateTime EndDate { get; private set; }
-        public Tenant Tenant { get; private set; }
+        // public Tenant Tenant { get; private set; }
+        public int TenantID;
+        public int RoomID;
         public bool IsActive { get; }
 
-        public Reservation(Tenant tenant, DateTime startTime, DateTime endTime) { 
+        public Reservation(int tenantId, int roomId, DateTime startTime, DateTime endTime) { 
             throw new NotImplementedException();
         }
     }
