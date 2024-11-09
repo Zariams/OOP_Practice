@@ -16,11 +16,11 @@ namespace TestProject
             //Assert
             RoomType roomType = RoomType.Budget;
             int cost = 4;
-            int currentCounter = HotelRoom.Counter;
+            int currentCounter = Room.Counter;
             //Act
-            HotelRoom room = new HotelRoom(cost,roomType);
+            Room room = new Room(cost,roomType);
             //Assert
-            Assert.AreEqual(currentCounter+1,room.RoomID);
+            Assert.AreEqual(currentCounter+1,room.ID);
             Assert.AreEqual(roomType,room.Type);
             Assert.AreEqual(cost,room.DailyCost);
         }
@@ -33,10 +33,10 @@ namespace TestProject
             
             RoomType roomType = (RoomType)type;
             int cost = 4;
-            int currentCounter = HotelRoom.Counter;
+            int currentCounter = Room.Counter;
             //Act + Assert
-            Assert.ThrowsException<ArgumentException>(()=>new HotelRoom(cost,roomType));
-            Assert.AreEqual(currentCounter,currentCounter);
+            Assert.ThrowsException<ArgumentException>(()=>new Room(cost,roomType));
+            Assert.AreEqual(currentCounter,Room.Counter);
         }
         [TestMethod]
         [DataRow(0)]
@@ -45,10 +45,10 @@ namespace TestProject
         {
             //Assert
             RoomType roomType = RoomType.Standard;
-            int currentCounter = HotelRoom.Counter;
+            int currentCounter = Room.Counter;
             //Act + Assert
-            Assert.ThrowsException<ArgumentException>(() => new HotelRoom(cost, roomType));
-            Assert.AreEqual(currentCounter, currentCounter);
+            Assert.ThrowsException<ArgumentException>(() => new Room(cost, roomType));
+            Assert.AreEqual(currentCounter, Room.Counter);
         }
     }
 }
