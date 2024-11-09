@@ -58,7 +58,7 @@
     <Compile Include="Account.cs" />
     <Compile Include="AccountState.cs" />
     <Compile Include="IBankAccount.cs" />
-    <Compile Include="HotelRoom.cs" />
+    <Compile Include="Room.cs" />
     <Compile Include="Reservation.cs" />
     <Compile Include="RoomType.cs" />
     <Compile Include="Tenant.cs" />

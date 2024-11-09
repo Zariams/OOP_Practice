@@ -6,17 +6,17 @@ using System.Text;
 
 namespace OOP_Practice
 {
-    public class HotelRoom
+    public class Room
     {
         public static int Counter { get; private set; }
-        public Hotel Hotel { get; set; }
-        public int RoomID { get; private set; }
+       // public Hotel Hotel { get; set; }
+        public int ID { get; private set; }
         public RoomType Type { get; set; }
         public int DailyCost { get; set; } 
         //   public Tenant Tenant { get; set; }
         //   public List<RoomReservation> Reservations { get; set; }
 
-        public HotelRoom(int cost, RoomType roomType)
+        public Room(int cost, RoomType roomType)
         {
             throw new NotImplementedException();
         }
