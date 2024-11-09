@@ -12,7 +12,8 @@ namespace OOP_Practice
         // public Tenant Tenant { get; private set; }
         public int TenantID;
         public int RoomID;
-        public bool IsActive { get; }
+        public bool IsActiveToday { get; }
+        public bool IsDeleted { get; set; }
 
         public Reservation(int tenantId, int roomId, DateTime startTime, DateTime endTime) { 
             throw new NotImplementedException();
