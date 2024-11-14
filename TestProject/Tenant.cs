@@ -28,20 +28,18 @@ namespace TestProject
             Assert.AreEqual(currentCounter + 1, Tenant.Counter);
         }
         [TestMethod]
-        public void ConstructorTest_incorrect_Name()
+        [DataRow("12345")]
+        [DataRow("A A")]
+        [DataRow("Джон Сміт")]
+        [DataRow("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa")]
+        [DataRow("John")]
+        public void ConstructorTest_incorrect_Name(string name)
         {
             //Arrange
-            string name1 = "12345";
-            string name2 = "A";
-            string name3 = "Джон";
-            string name4 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa";
             DateTime birthdate = new DateTime(1980, 1, 1);
             int currentCounter = Tenant.Counter;
             //Act + Assert
-            Assert.ThrowsException<ArgumentException>(() => new Tenant(name1, birthdate));
-            Assert.ThrowsException<ArgumentException>(() => new Tenant(name2, birthdate));
-            Assert.ThrowsException<ArgumentException>(() => new Tenant(name3, birthdate));
-            Assert.ThrowsException<ArgumentException>(() => new Tenant(name4, birthdate));
+            Assert.ThrowsException<ArgumentException>(() => new Tenant(name, birthdate));
             Assert.AreEqual(currentCounter, Tenant.Counter);
         }
         [TestMethod]
@@ -50,7 +48,7 @@ namespace TestProject
             //Arrange
             string name = "John Smith";
             DateTime birthdate1 = new DateTime(2980, 1, 1);
-            DateTime birthdate2 = DateTime.Now;
+            DateTime birthdate2 = DateTime.Now.AddYears(-15);
             DateTime birthdate3 = DateTime.Now.AddYears(-200);
             int currentCounter = Tenant.Counter;
             //Act + Assert

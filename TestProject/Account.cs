@@ -53,7 +53,7 @@ namespace TestProject
         public void WithdrawTest_overdraft_correct()
         {
             //Arrange
-            Account.overdraftPercentage = 20;
+            Account.OverdraftMax = 1;
             Account account = new Account();
             account.Deposit(10);
             //Act
