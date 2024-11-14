@@ -7,7 +7,7 @@ namespace OOP_Practice
 {
     public class Account : IBankAccount
     {
-        static public double overdraftPercentage = 0;
+        static public double OverdraftMax { get; set; } = 0;
         public double Balance { get; private set; }
         public AccountState State { get; set; }
 
