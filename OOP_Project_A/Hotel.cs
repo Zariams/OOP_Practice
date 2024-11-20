@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,10 +12,13 @@ namespace OOP_Practice
         public string Address { get; private set; } = "WIP";
         public List<Tenant> Tenants { get; private set; }
 
-       // public Dictionary<HotelRoom,List<Reservation>> Rooms { get; private set; }
-       // public Account HotelFunds { get; set; }
-        public List<Room> Rooms { get; set; }
-         public List<Reservation> Reservations { get; set; }
+        // public Dictionary<HotelRoom,List<Reservation>> Rooms { get; private set; }
+        // public Account HotelFunds { get; set; }
+        public List<Room> Rooms { get; private set; }
+        public List<Reservation> Reservations { get; private set; }
+        public List<StaffMember> Staff { get; private set; }
+        public Account Account { get; private set; }
+        public DateTime LastFeeWithdrawal {get; set;}
 
         public Hotel(string name, string address)
         {
@@ -39,7 +43,7 @@ namespace OOP_Practice
             throw new NotImplementedException();
         }
 
-        public void RegisterTenant(string name, DateTime birthDate)
+        public void RegisterTenant(string firstName, string lastName, DateTime birthDate)
         {
             throw new NotImplementedException();
         }
@@ -53,7 +57,19 @@ namespace OOP_Practice
             throw new NotImplementedException();
         }
 
-        public void WithdrawDailyFee()
+        public void HireStaff(StaffMember staff)
+        {
+            throw new NotImplementedException();   
+        }
+        public void FireStaff(int ID)
+        {
+            throw new NotImplementedException();
+        }
+        public List<Reservation> WithdrawDailyFee()
+        {
+            throw new NotImplementedException();
+        }
+        public void PayStaffSalaries()
         {
             throw new NotImplementedException();
         }
