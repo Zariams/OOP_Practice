@@ -11,8 +11,6 @@ namespace OOP_Practice
         public string Address { get; private set; } = "WIP";
         public List<Tenant> Tenants { get; private set; }
 
-       // public Dictionary<HotelRoom,List<Reservation>> Rooms { get; private set; }
-       // public Account HotelFunds { get; set; }
         public List<Room> Rooms { get; set; }
          public List<Reservation> Reservations { get; set; }
 

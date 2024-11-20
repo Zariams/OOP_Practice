@@ -303,7 +303,6 @@ namespace TestProject
             Hotel hotel = new Hotel(name, address);
 
             Room room = new Room(5, RoomType.Business);
-          //  hotel.RegisterNewRoom(room);
 
             Tenant tenant = new Tenant("John Smith", DateTime.Now.AddYears(-20));
             hotel.RegisterTenant(tenant);
