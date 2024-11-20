@@ -6,7 +6,7 @@ using System.Text;
 
 namespace OOP_Practice
 {
-    public class Room
+    public class Room : IComparable<Room>, ICloneable
     {
         public static int Counter { get; private set; }
        // public Hotel Hotel { get; set; }
@@ -20,6 +20,14 @@ namespace OOP_Practice
         {
             throw new NotImplementedException();
         }
-        
+        public object Clone()
+        {
+            throw new NotImplementedException ();
+        }
+        public int CompareTo(Room other)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }
