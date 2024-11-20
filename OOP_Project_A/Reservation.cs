@@ -9,7 +9,6 @@ namespace OOP_Practice
     {
         public DateTime StartDate { get; private set; }
         public DateTime EndDate { get; private set; }
-        // public Tenant Tenant { get; private set; }
         public int TenantID;
         public int RoomID;
         public bool IsActiveToday { get; }
