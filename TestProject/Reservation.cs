@@ -17,7 +17,7 @@ namespace TestProject
             //Arrange
             DateTime date1 = DateTime.Now.AddSeconds(-1);
             DateTime date2 = DateTime.Now.AddDays(5);
-            Tenant tenant = new Tenant("John Smith", DateTime.Now.AddYears(-20));
+            Tenant tenant = new Tenant("John", "Smith", DateTime.Now.AddYears(-20));
             int tenantID = tenant.ID;
             Room room = new Room(5, RoomType.Budget);
             int roomID = room.ID;
@@ -37,7 +37,7 @@ namespace TestProject
             //Arrange
             DateTime date1 = DateTime.Now.AddDays(1);
             DateTime date2 = DateTime.Now.AddDays(5);
-            Tenant tenant = new Tenant("John Smith", DateTime.Now.AddYears(-20));
+            Tenant tenant = new Tenant("John", "Smith", DateTime.Now.AddYears(-20));
             int tenantID = tenant.ID;
             Room room = new Room(5, RoomType.Budget);
             int roomID= room.ID;
@@ -57,7 +57,7 @@ namespace TestProject
             //Arrange
             DateTime date1 = DateTime.Now.AddDays(-1);
             DateTime date2 = DateTime.Now.AddDays(5);
-            Tenant tenant = new Tenant("John Smith", DateTime.Now.AddYears(-20));
+            Tenant tenant = new Tenant("John", "Smith", DateTime.Now.AddYears(-20));
             int tenantID = tenant.ID;
             Room room = new Room(5, RoomType.Budget);
             int roomID = room.ID;
@@ -68,7 +68,7 @@ namespace TestProject
         public void ConstructorTest_incorrect_EndDate()
         {
             //Arrange
-            Tenant tenant = new Tenant("John Smith", DateTime.Now.AddYears(-20));
+            Tenant tenant = new Tenant("John", "Smith", DateTime.Now.AddYears(-20));
             int tenantID = tenant.ID;
             Room room = new Room(5, RoomType.Budget);
             int roomID = room.ID;
