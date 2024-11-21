@@ -17,6 +17,9 @@ namespace OOP_Practice
         {
             return DateTime.Now.Month > BirthDate.Month? DateTime.Now.Year-BirthDate.Year: DateTime.Now.Year - BirthDate.Year-1;
         }
-
+        public override string ToString()
+        {
+            return $"{FirstName} {LastName}, {BirthDate}";
+        }
     }
 }

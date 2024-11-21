@@ -9,14 +9,75 @@ namespace OOP_Practice
 {
     public class Tenant : Person
     {
-        public static int Counter {  get; private set; }   
-        public override string FirstName { get; set; }
-        public override string LastName { get; set; }
-        public override DateTime BirthDate {  get; set; } 
+        private string firstName;
+
+        private string lastName;
+        private DateTime birthDate;
+        public static int Counter { get; private set; } = 0; 
+        public override string FirstName {
+            get
+            {
+                return firstName;
+            }
+            set
+            {
+                if (String.IsNullOrEmpty(value))
+                    throw new ArgumentException("Ім'я не може бути порожнім!");
+                if (value.Length < 3 || value.Length > 12)
+                    throw new ArgumentException($"Ім'я не може бути коротшим за 3 символи та довшим за 12 символів (Введено: {value.Length})!");
+
+                foreach (char c in value)
+                {
+                    if ((c < 'a' || c > 'z') && (c < 'A' || c > 'Z'))
+                        throw new ArgumentException("Ім'я містить непідтримувані символи!");
+                }
+                firstName = value;
+            }
+        }
+        public override string LastName
+        {
+            get
+            {
+                return lastName;
+            }
+            set
+            {
+                if (String.IsNullOrEmpty(value))
+                    throw new ArgumentException("Прізвище не може бути порожнім!");
+                if (value.Length < 3 || value.Length > 12)
+                    throw new ArgumentException($"Прізвище не може бути коротшим за 3 символи та довшим за 12 символів (Введено: {value.Length})!");
+
+                foreach (char c in value)
+                {
+                    if ((c < 'a' || c > 'z') && (c < 'A' || c > 'Z'))
+                        throw new ArgumentException("Прізвище містить непідтримувані символи!");
+                }
+                lastName = value;
+            }
+        }
+        public override DateTime BirthDate
+        {
+            get
+            {
+                return birthDate;
+            }
+            set
+            {
+                if (value > DateTime.Now.AddYears(-16) || value < DateTime.Now.AddYears(-200))
+                    throw new ArgumentException("Для реєестрації жильця готелю, йому має бути більше 16 та менше 200 років!");
+                birthDate = value;
+            }
+        } 
         public Account Account { get; private set; }
         public int ID { get; private set; }
         public Tenant(string firstName, string lastName, DateTime birthDate) {
-            throw new NotImplementedException();
+            FirstName = firstName;
+            LastName = lastName;
+            BirthDate = birthDate;
+            Account  = new Account();
+            Counter++;
+            ID = Counter;
+           
         }
     }
 }

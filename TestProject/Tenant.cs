@@ -30,6 +30,7 @@ namespace TestProject
             Assert.AreEqual(currentCounter + 1, Tenant.Counter);
         }
         [TestMethod]
+        [DataRow(null)]
         [DataRow("12345")]
         [DataRow("A")]
         [DataRow("Джон")]
