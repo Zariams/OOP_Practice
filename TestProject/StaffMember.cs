@@ -31,7 +31,7 @@ namespace TestProject
             Assert.AreEqual(currentCounter + 1, staffMember.ID);
             Assert.AreEqual(currentCounter + 1, StaffMember.Counter);
             Assert.IsFalse(staffMember.IsFired);
-            Assert.AreEqual(0,(DateTime.Now-staffMember.LastSalaryPay).TotalSeconds,0.01);
+            Assert.AreEqual(0,(Clock.Now-staffMember.LastSalaryPay).TotalSeconds,0.01);
             Assert.AreEqual(job, staffMember.Job);
         }
         [TestMethod]
@@ -73,8 +73,8 @@ namespace TestProject
             string firstName = "John";
             string lastName = "Smith";
             DateTime birthdate1 = new DateTime(2980, 1, 1);
-            DateTime birthdate2 = DateTime.Now.AddYears(-15);
-            DateTime birthdate3 = DateTime.Now.AddYears(-200);
+            DateTime birthdate2 = Clock.Now.AddYears(-15);
+            DateTime birthdate3 = Clock.Now.AddYears(-200);
             int currentCounter = StaffMember.Counter;
             Job job = Job.Concierge;
             double salary = 75;
@@ -187,7 +187,7 @@ namespace TestProject
             Job job = Job.Concierge;
             double salary = 75;
             StaffMember staffMember = new StaffMember(firstName, lastName, birthdate, job, salary);
-            DateTime date = DateTime.Now.AddDays(-10);
+            DateTime date = Clock.Now.AddDays(-10);
             //Act
             staffMember.LastSalaryPay = date;
             //Assert
@@ -204,7 +204,7 @@ namespace TestProject
             Job job = Job.Concierge;
             double salary = 75;
             StaffMember staffMember = new StaffMember(firstName, lastName, birthdate, job, salary);
-            DateTime date = DateTime.Now.AddDays(10);
+            DateTime date = Clock.Now.AddDays(10);
             //Act + Assert
             Assert.ThrowsException<ArgumentException>(() => staffMember.LastSalaryPay = date);
         }
@@ -221,9 +221,9 @@ namespace TestProject
             StaffMember staffMember1 = new StaffMember(firstName, lastName, birthdate, job, salary);
             StaffMember staffMember2 = new StaffMember(firstName, lastName, birthdate, job, salary);
             StaffMember staffMember3 = new StaffMember(firstName, lastName, birthdate, job, salary);
-            DateTime date1 = DateTime.Now.AddDays(-10);
-            DateTime date2 = DateTime.Now.AddDays(-5);
-            DateTime date3 = DateTime.Now.AddDays(-10);
+            DateTime date1 = Clock.Now.AddDays(-10);
+            DateTime date2 = Clock.Now.AddDays(-5);
+            DateTime date3 = Clock.Now.AddDays(-10);
             staffMember1.LastSalaryPay = date1;
             staffMember2.LastSalaryPay = date2;
             staffMember3.LastSalaryPay = date3;

@@ -7,9 +7,9 @@ namespace OOP_Practice
 {
     public class Reservation
     {
-        private DateTime? startDate;
-        private DateTime? endDate;
-        public DateTime? StartDate
+        private DateTime startDate;
+        private DateTime endDate;
+        public DateTime StartDate
         {
             get
             {
@@ -17,25 +17,25 @@ namespace OOP_Practice
             }
             private set
             {
-                if (value< DateTime.Now.AddMinutes(-1))
+                if (value< Clock.Now.AddMinutes(-1))
                     throw new ArgumentException("Початкова дата не може бути у минулому!");
-                if (endDate == null || value < endDate?.AddDays(-1))
+                if (endDate == DateTime.MinValue || value < endDate.AddDays(-1))
                     startDate = value;
                 else
                     throw new ArgumentException("Початкова дата бронювання має передувати кінцевій даті більше, ніж на добу!");
             }
         }
-        public DateTime? EndDate { 
+        public DateTime EndDate { 
             get
             {
                 return endDate;
             }
             private set 
             {
-                if (value < DateTime.Now.AddMinutes(-1))
+                if (value < Clock.Now.AddMinutes(-1))
                     throw new ArgumentException("Кінцева дата не може бути у минулому!");
 
-                if (startDate == null || startDate?.AddDays(1) < value)
+                if (startDate == DateTime.MinValue || startDate.AddDays(1) < value)
                     endDate = value;
                 else
                     throw new ArgumentException("Кінцева дата бронювання не може передувати початковій даті менше, ніж на добу!");
@@ -46,7 +46,7 @@ namespace OOP_Practice
         public bool IsActiveToday { 
             get 
             {
-                return (StartDate <= DateTime.Now && DateTime.Now <= EndDate);
+                return IsActive(Clock.Now);
             }
         }
         public bool IsDeleted { get; set; }
@@ -56,6 +56,11 @@ namespace OOP_Practice
             RoomID = roomId;
             this.StartDate = startTime;
             this.EndDate = endTime; 
+        }
+        public bool IsActive(DateTime date)
+        {
+            return (StartDate <= date.AddMinutes(1) && date <= EndDate.AddMinutes(1));
+            // return ((date-(StartDate ?? Clock.Now)).TotalMinutes > 1 && ((EndDate ?? Clock.Now) - date).TotalMinutes > 1);
         }
     }
 }

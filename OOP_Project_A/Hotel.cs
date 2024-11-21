@@ -91,7 +91,7 @@ namespace OOP_Practice
             }
             set
             {
-                if (value > DateTime.Now) throw new ArgumentException("Дата останнього зняття орендної плати не може бути у майбутньому!");
+                if (value > Clock.Now) throw new ArgumentException("Дата останнього зняття орендної плати не може бути у майбутньому!");
                 lastWithdrawal = value;
             }
         }
@@ -100,7 +100,7 @@ namespace OOP_Practice
         {
             Name = name;
             Address = address;
-            lastWithdrawal = DateTime.Now;
+            lastWithdrawal = Clock.Now;
             Tenants = new List<Tenant>();
             Rooms = new List<Room>();
             Reservations = new List<Reservation>();
@@ -111,13 +111,13 @@ namespace OOP_Practice
 
         public List<Room> GetAvailableRooms()
         {
-           return GetAvailableRoomsForDates(DateTime.Now.AddSeconds(1),DateTime.Now.AddDays(1).AddSeconds(1));
+           return GetAvailableRoomsForDates(Clock.Now.AddSeconds(1),Clock.Now.AddDays(1).AddSeconds(1));
         }
         public List<Room> GetAvailableRoomsForDates(DateTime dateStart, DateTime dateEnd)
         {
-            if (dateEnd < DateTime.Now.AddDays(1))
+            if (dateEnd < Clock.Now.AddDays(1))
                 throw new ArgumentException("Забронювати номер можна тільки за день!");
-            if (dateStart < DateTime.Now)
+            if (dateStart < Clock.Now)
                 throw new ArgumentException("Бронювання номеру не може починатися у минулому!");
             if (dateEnd < dateStart.AddDays(1))
                 throw new ArgumentException("Початок бронювання номер має передувати кінцю бронювання не менш, ніж на день");
@@ -200,18 +200,26 @@ namespace OOP_Practice
         }
         public List<Reservation> WithdrawDailyFee()
         {
-            List<Reservation> activeReservations = Reservations.FindAll(book => book.IsActiveToday && !book.IsDeleted);
-            for (int i = 0; i < activeReservations.Count; i++)
+            if (Clock.Now < LastFeeWithdrawal.AddDays(1))
+                throw new Exception("Сьогодні орендна плата вже була знята!");
+            List<Reservation> cancelledReservations = new List<Reservation>();
+            for (int offset = 1; offset <= (Clock.Now-LastFeeWithdrawal).TotalDays; offset++)
             {
-                Reservation book = activeReservations[i];
-                Tenant tenant = Tenants.Find(t => t.ID == book.TenantID);
-                Room room = Rooms.Find(r => r.ID == book.RoomID);
-                if (tenant.Account.Withdraw(room.DailyCost))
-                    Account.Deposit(room.DailyCost);
-                else
-                    book.IsDeleted = true;
+                DateTime date = LastFeeWithdrawal.AddDays(offset);
+                List<Reservation> activeReservations = Reservations.FindAll(book => book.IsActive(date) && !book.IsDeleted);
+                for (int i = 0; i < activeReservations.Count; i++)
+                {
+                    Reservation book = activeReservations[i];
+                    Tenant tenant = Tenants.Find(t => t.ID == book.TenantID);
+                    Room room = Rooms.Find(r => r.ID == book.RoomID);
+                    if (tenant.Account.Withdraw(room.DailyCost))
+                        Account.Deposit(room.DailyCost);
+                    else
+                        book.IsDeleted = true;
+                }
+                cancelledReservations.AddRange(activeReservations.FindAll(book => book.IsDeleted));
             }
-            List<Reservation> cancelledReservations = activeReservations.FindAll(book =>book.IsDeleted);
+            LastFeeWithdrawal = Clock.Now;
             return cancelledReservations;
         }
         public void PayStaffSalaries()
@@ -220,12 +228,12 @@ namespace OOP_Practice
             List<StaffMember> activeWorkers = Staff.FindAll(x => !x.IsFired);
             double sum = 0;
             foreach (StaffMember worker in activeWorkers)
-                sum += worker.DailyRate * Math.Floor((DateTime.Now - worker.LastSalaryPay).TotalDays);
+                sum += worker.DailyRate * Math.Floor((Clock.Now - worker.LastSalaryPay).TotalDays);
             double availableFundsCoefficient = Math.Min(Account.Balance / sum, 1);
             for (int i = 0; i < activeWorkers.Count; i++)
             {
                 StaffMember worker = activeWorkers[i];
-                double percent = (worker.DailyRate * Math.Floor((DateTime.Now - worker.LastSalaryPay).TotalDays) / sum);
+                double percent = (worker.DailyRate * Math.Floor((Clock.Now - worker.LastSalaryPay).TotalDays) / sum);
                 double coveredDays = Math.Floor(percent * availableFundsCoefficient* sum / worker.DailyRate);
                 if (Account.Withdraw(coveredDays * worker.DailyRate))
                 {

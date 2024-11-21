@@ -65,8 +65,8 @@ namespace TestProject
             string firstName = "John";
             string lastName = "Smith";
             DateTime birthdate1 = new DateTime(2980, 1, 1);
-            DateTime birthdate2 = DateTime.Now.AddYears(-15);
-            DateTime birthdate3 = DateTime.Now.AddYears(-200);
+            DateTime birthdate2 = Clock.Now.AddYears(-15);
+            DateTime birthdate3 = Clock.Now.AddYears(-200);
             int currentCounter = Tenant.Counter;
             //Act + Assert
             Assert.ThrowsException<ArgumentException>(() => new Tenant(firstName, lastName, birthdate1));

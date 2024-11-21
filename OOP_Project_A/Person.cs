@@ -15,7 +15,7 @@ namespace OOP_Practice
      
         public virtual int GetAge()
         {
-            return DateTime.Now.Month > BirthDate.Month? DateTime.Now.Year-BirthDate.Year: DateTime.Now.Year - BirthDate.Year-1;
+            return Clock.Now.Month > BirthDate.Month? Clock.Now.Year-BirthDate.Year: Clock.Now.Year - BirthDate.Year-1;
         }
         public override string ToString()
         {

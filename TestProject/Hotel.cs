@@ -19,7 +19,7 @@ namespace TestProject
             Assert.AreEqual(0, hotel.Rooms.Count);
             Assert.IsNotNull(hotel.Staff);
             Assert.IsNotNull(hotel.Account);
-            Assert.AreEqual(0, (DateTime.Now-hotel.LastFeeWithdrawal).TotalSeconds,0.01);
+            Assert.AreEqual(0, (Clock.Now-hotel.LastFeeWithdrawal).TotalSeconds,0.01);
         }
         [TestMethod]
         public void ConstructorTest_incorrect_Name()
@@ -66,7 +66,7 @@ namespace TestProject
             string name = "My Hotel";
             string address = "3, Shevchenko st., Lviv, Ukraine";
             Hotel hotel = new Hotel(name, address);
-            DateTime lastfee = DateTime.Now.AddDays(-10);
+            DateTime lastfee = Clock.Now.AddDays(-10);
             //Act
             hotel.LastFeeWithdrawal = lastfee;
             //Assert
@@ -79,7 +79,7 @@ namespace TestProject
             string name = "My Hotel";
             string address = "3, Shevchenko st., Lviv, Ukraine";
             Hotel hotel = new Hotel(name, address);
-            DateTime lastfee = DateTime.Now.AddDays(10);
+            DateTime lastfee = Clock.Now.AddDays(10);
             //Act + Assert
            Assert.ThrowsException<ArgumentException>(()=> hotel.LastFeeWithdrawal = lastfee);
         }
@@ -94,8 +94,8 @@ namespace TestProject
             string tenantLastName1 = "Smith";
             string tenantFirstName2 = "Lara";
             string tenantLastName2 = "Crowley";
-            DateTime birthDate1 = DateTime.Now.AddYears(-20);
-            DateTime birthDate2 = DateTime.Now.AddYears(-19);
+            DateTime birthDate1 = Clock.Now.AddYears(-20);
+            DateTime birthDate2 = Clock.Now.AddYears(-19);
             Tenant tenant2 = new Tenant(tenantFirstName2,tenantLastName2, birthDate2);
             //Act
             hotel.RegisterTenant(tenantFirstName1, tenantLastName1, birthDate1);
@@ -118,7 +118,7 @@ namespace TestProject
             string address = "3, Shevchenko st., Lviv, Ukraine";
             Hotel hotel = new Hotel(name, address);
             string incorrectName = "12345";
-            DateTime birthDate = DateTime.Now.AddYears(-5);
+            DateTime birthDate = Clock.Now.AddYears(-5);
             //Act+Assert
             Assert.ThrowsException<ArgumentException>(()=>hotel.RegisterTenant(incorrectName, "Smith", birthDate));
             Assert.ThrowsException<ArgumentException>(() => hotel.RegisterTenant("John",incorrectName, birthDate));
@@ -134,7 +134,7 @@ namespace TestProject
             Hotel hotel = new Hotel(name, address);
             string tenantFirstName = "John";
             string tenantLastName = "Smith";
-            DateTime birthDate = DateTime.Now.AddYears(-20);
+            DateTime birthDate = Clock.Now.AddYears(-20);
             Tenant tenant = new Tenant(tenantFirstName,tenantLastName, birthDate);
             //Act
             hotel.RegisterTenant(tenant);
@@ -206,11 +206,11 @@ namespace TestProject
             Room room = new Room(5, RoomType.Business);
             hotel.RegisterNewRoom(room);
 
-            Tenant tenant = new Tenant("John", "Smith", DateTime.Now.AddYears(-20));
+            Tenant tenant = new Tenant("John", "Smith", Clock.Now.AddYears(-20));
             hotel.RegisterTenant(tenant);
 
-            DateTime date1 = DateTime.Now;
-            DateTime date2 = DateTime.Now.AddDays(5);
+            DateTime date1 = Clock.Now;
+            DateTime date2 = Clock.Now.AddDays(5);
             //Act
 
             hotel.BookARoom(tenant.ID, room.ID, date1, date2);
@@ -232,11 +232,11 @@ namespace TestProject
             Room room = new Room(5, RoomType.Business);
             hotel.RegisterNewRoom(room);
 
-            Tenant tenant = new Tenant("John", "Smith", DateTime.Now.AddYears(-20));
+            Tenant tenant = new Tenant("John", "Smith", Clock.Now.AddYears(-20));
             hotel.RegisterTenant(tenant);
 
-            DateTime date1 = DateTime.Now;
-            DateTime date2 = DateTime.Now.AddDays(5);
+            DateTime date1 = Clock.Now;
+            DateTime date2 = Clock.Now.AddDays(5);
             //Act+Assert
 
             Assert.ThrowsException<ArgumentException>(()=>hotel.BookARoom(tenant.ID, room.ID+1, date1, date2));           
@@ -253,11 +253,11 @@ namespace TestProject
             Room room = new Room(5, RoomType.Business);
             hotel.RegisterNewRoom(room);
 
-            Tenant tenant = new Tenant("John", "Smith", DateTime.Now.AddYears(-20));
+            Tenant tenant = new Tenant("John", "Smith", Clock.Now.AddYears(-20));
             hotel.RegisterTenant(tenant);
 
-            DateTime date1 = DateTime.Now;
-            DateTime date2 = DateTime.Now.AddDays(5);
+            DateTime date1 = Clock.Now;
+            DateTime date2 = Clock.Now.AddDays(5);
             //Act+Assert
 
             Assert.ThrowsException<ArgumentException>(() => hotel.BookARoom(tenant.ID+1, room.ID, date1, date2));
@@ -274,11 +274,11 @@ namespace TestProject
             Room room = new Room(5, RoomType.Business);
             hotel.RegisterNewRoom(room);
 
-            Tenant tenant = new Tenant("John", "Smith", DateTime.Now.AddYears(-20));
+            Tenant tenant = new Tenant("John", "Smith", Clock.Now.AddYears(-20));
             hotel.RegisterTenant(tenant);
 
-            DateTime date1 = DateTime.Now;
-            DateTime date2 = DateTime.Now.AddDays(-5);
+            DateTime date1 = Clock.Now;
+            DateTime date2 = Clock.Now.AddDays(-5);
             //Act+Assert
 
             Assert.ThrowsException<ArgumentException>(() => hotel.BookARoom(tenant.ID, room.ID, date1, date2));
@@ -296,11 +296,11 @@ namespace TestProject
             Room room = new Room(5, RoomType.Business);
             hotel.RegisterNewRoom(room);
 
-            Tenant tenant = new Tenant("John", "Smith", DateTime.Now.AddYears(-20));
+            Tenant tenant = new Tenant("John", "Smith", Clock.Now.AddYears(-20));
             hotel.RegisterTenant(tenant);
 
-            DateTime date1 = DateTime.Now;
-            DateTime date2 = DateTime.Now.AddDays(5);
+            DateTime date1 = Clock.Now;
+            DateTime date2 = Clock.Now.AddDays(5);
             hotel.BookARoom(tenant.ID, room.ID, date1, date2);
             //Act
             hotel.CancelRoomReservation(tenant.ID, room.ID);
@@ -321,7 +321,7 @@ namespace TestProject
             Room room = new Room(5, RoomType.Business);
             hotel.RegisterNewRoom(room);
 
-            Tenant tenant = new Tenant("John", "Smith", DateTime.Now.AddYears(-20));
+            Tenant tenant = new Tenant("John", "Smith", Clock.Now.AddYears(-20));
             
             //Act+Assert
             Assert.ThrowsException<KeyNotFoundException>(()=>hotel.CancelRoomReservation(tenant.ID, room.ID));
@@ -338,11 +338,11 @@ namespace TestProject
 
             Room room = new Room(5, RoomType.Business);
 
-            Tenant tenant = new Tenant("John", "Smith", DateTime.Now.AddYears(-20));
+            Tenant tenant = new Tenant("John", "Smith", Clock.Now.AddYears(-20));
             hotel.RegisterTenant(tenant);
 
-            DateTime date1 = DateTime.Now;
-            DateTime date2 = DateTime.Now.AddDays(5);
+            DateTime date1 = Clock.Now;
+            DateTime date2 = Clock.Now.AddDays(5);
 
             //Act+Assert
             Assert.ThrowsException<KeyNotFoundException>(() => hotel.CancelRoomReservation(tenant.ID, room.ID));
@@ -358,29 +358,29 @@ namespace TestProject
             Room room1 = new Room(5, RoomType.Business);
             hotel.RegisterNewRoom(room1);
 
-            Tenant tenant1 = new Tenant("John", "Smith", DateTime.Now.AddYears(-20));
+            Tenant tenant1 = new Tenant("John", "Smith", Clock.Now.AddYears(-20));
             hotel.RegisterTenant(tenant1);
 
-            DateTime date1 = DateTime.Now.AddSeconds(1);
-            DateTime date2 = DateTime.Now.AddDays(5);
+            DateTime date1 = Clock.Now.AddSeconds(1);
+            DateTime date2 = Clock.Now.AddDays(5);
             hotel.BookARoom(tenant1.ID, room1.ID, date1, date2);
 
             Room room2 = new Room(5, RoomType.Business);
             hotel.RegisterNewRoom(room2);
 
-            Tenant tenant2 = new Tenant("John", "Smith", DateTime.Now.AddYears(-20));
+            Tenant tenant2 = new Tenant("John", "Smith", Clock.Now.AddYears(-20));
             hotel.RegisterTenant(tenant2);
 
-            DateTime date3 = DateTime.Now.AddDays(6);
-            DateTime date4 = DateTime.Now.AddDays(10);
+            DateTime date3 = Clock.Now.AddDays(6);
+            DateTime date4 = Clock.Now.AddDays(10);
             hotel.BookARoom(tenant2.ID, room2.ID, date3, date4);
 
             hotel.BookARoom(tenant1.ID, room2.ID, date1, date2);
             hotel.CancelRoomReservation(tenant1.ID, room2.ID);
             //Act
-            List<Room> result1 = hotel.GetAvailableRoomsForDates(DateTime.Now.AddSeconds(1), DateTime.Now.AddDays(3));
-            List<Room> result2 = hotel.GetAvailableRoomsForDates(DateTime.Now.AddDays(6), DateTime.Now.AddDays(8));
-            List<Room> result3 = hotel.GetAvailableRoomsForDates(DateTime.Now.AddDays(4), DateTime.Now.AddDays(10));
+            List<Room> result1 = hotel.GetAvailableRoomsForDates(Clock.Now.AddSeconds(1), Clock.Now.AddDays(3));
+            List<Room> result2 = hotel.GetAvailableRoomsForDates(Clock.Now.AddDays(6), Clock.Now.AddDays(8));
+            List<Room> result3 = hotel.GetAvailableRoomsForDates(Clock.Now.AddDays(4), Clock.Now.AddDays(10));
             //Assert
             Assert.AreEqual(1, result1.Count);
             Assert.AreEqual(room2, result1[0]);
@@ -399,15 +399,15 @@ namespace TestProject
             Room room1 = new Room(5, RoomType.Business);
             hotel.RegisterNewRoom(room1);
 
-            Tenant tenant1 = new Tenant("John", "Smith", DateTime.Now.AddYears(-20));
+            Tenant tenant1 = new Tenant("John", "Smith", Clock.Now.AddYears(-20));
             hotel.RegisterTenant(tenant1);
 
-            DateTime date1 = DateTime.Now;
-            DateTime date2 = DateTime.Now.AddDays(5);
+            DateTime date1 = Clock.Now;
+            DateTime date2 = Clock.Now.AddDays(5);
             hotel.BookARoom(tenant1.ID, room1.ID, date1, date2);
             //Act + Assert
-            Assert.ThrowsException<ArgumentException>(()=>hotel.GetAvailableRoomsForDates(DateTime.Now, DateTime.Now.AddDays(-3)));
-            Assert.ThrowsException<ArgumentException>(() => hotel.GetAvailableRoomsForDates(DateTime.Now.AddDays(-1), DateTime.Now.AddDays(3)));
+            Assert.ThrowsException<ArgumentException>(()=>hotel.GetAvailableRoomsForDates(Clock.Now, Clock.Now.AddDays(-3)));
+            Assert.ThrowsException<ArgumentException>(() => hotel.GetAvailableRoomsForDates(Clock.Now.AddDays(-1), Clock.Now.AddDays(3)));
         }
         [TestMethod]
         public void GetAvailableRoomsTest()
@@ -420,21 +420,21 @@ namespace TestProject
             Room room1 = new Room(5, RoomType.Business);
             hotel.RegisterNewRoom(room1);
 
-            Tenant tenant1 = new Tenant("John", "Smith", DateTime.Now.AddYears(-20));
+            Tenant tenant1 = new Tenant("John", "Smith", Clock.Now.AddYears(-20));
             hotel.RegisterTenant(tenant1);
 
-            DateTime date1 = DateTime.Now;
-            DateTime date2 = DateTime.Now.AddDays(5);
+            DateTime date1 = Clock.Now;
+            DateTime date2 = Clock.Now.AddDays(5);
             hotel.BookARoom(tenant1.ID, room1.ID, date1, date2);
 
             Room room2 = new Room(5, RoomType.Business);
             hotel.RegisterNewRoom(room2);
 
-            Tenant tenant2 = new Tenant("John", "Smith", DateTime.Now.AddYears(-20));
+            Tenant tenant2 = new Tenant("John", "Smith", Clock.Now.AddYears(-20));
             hotel.RegisterTenant(tenant2);
 
-            DateTime date3 = DateTime.Now.AddDays(6);
-            DateTime date4 = DateTime.Now.AddDays(10);
+            DateTime date3 = Clock.Now.AddDays(6);
+            DateTime date4 = Clock.Now.AddDays(10);
             hotel.BookARoom(tenant2.ID, room2.ID, date3, date4);
 
             hotel.BookARoom(tenant1.ID, room2.ID, date1, date2);
@@ -446,35 +446,36 @@ namespace TestProject
             Assert.AreEqual(room2, result[0]);
         }
         [TestMethod]
-        public void WithdrawDailyFeeTest (){
+        public void WithdrawDailyFeeTest_Correct (){
             //Arrange
             string name = "My Hotel";
             string address = "3, Shevchenko st., Lviv, Ukraine";
             Hotel hotel = new Hotel(name, address);
+            hotel.LastFeeWithdrawal = Clock.Now.AddDays(-1);
 
             Room room1 = new Room(15, RoomType.Budget);
             hotel.RegisterNewRoom(room1);
 
-            Tenant tenant1 = new Tenant("John", "Smith", DateTime.Now.AddYears(-20));
+            Tenant tenant1 = new Tenant("John", "Smith", Clock.Now.AddYears(-20));
             tenant1.Account.Deposit(15);
             hotel.RegisterTenant(tenant1);
              
-            DateTime date1 = DateTime.Now;
-            DateTime date2 = DateTime.Now.AddDays(5);
+            DateTime date1 = Clock.Now;
+            DateTime date2 = Clock.Now.AddDays(5);
             hotel.BookARoom(tenant1.ID, room1.ID, date1, date2);
 
             Room room2 = new Room(500, RoomType.Luxury);
             hotel.RegisterNewRoom(room2);
 
-            Tenant tenant2 = new Tenant("Laura", "Crowley", DateTime.Now.AddYears(-20));
+            Tenant tenant2 = new Tenant("Laura", "Crowley", Clock.Now.AddYears(-20));
             tenant2.Account.Deposit(15);
             hotel.RegisterTenant(tenant2);
 
-            DateTime date3 = DateTime.Now.AddDays(6);
-            DateTime date4 = DateTime.Now.AddDays(10);
+            DateTime date3 = Clock.Now.AddDays(6);
+            DateTime date4 = Clock.Now.AddDays(10);
             hotel.BookARoom(tenant2.ID, room2.ID, date3, date4);
 
-            Tenant tenant3 = new Tenant("John", "Smith", DateTime.Now.AddYears(-20));
+            Tenant tenant3 = new Tenant("John", "Smith", Clock.Now.AddYears(-20));
             hotel.RegisterTenant(tenant3);
 
             hotel.BookARoom(tenant3.ID, room2.ID, date1, date2);
@@ -493,7 +494,117 @@ namespace TestProject
             Assert.IsTrue(hotel.Reservations.Find(x => x.TenantID == tenant3.ID).IsDeleted);
             Assert.AreEqual(1,cancelledReservations.Count);
             Assert.AreEqual(tenant3.ID, cancelledReservations[0].TenantID);
+            Assert.AreEqual(0, (Clock.Now - hotel.LastFeeWithdrawal).TotalSeconds, 0.01);
         }
+        [TestMethod]
+        public void WithdrawDailyFeeTest_Correct_Multiple_Days()
+        {
+            //Arrange
+            string name = "My Hotel";
+            string address = "3, Shevchenko st., Lviv, Ukraine";
+            Hotel hotel = new Hotel(name, address);
+            hotel.LastFeeWithdrawal = Clock.Now.AddDays(-1);
+
+            Room room1 = new Room(15, RoomType.Budget);
+            hotel.RegisterNewRoom(room1);
+
+            Tenant tenant1 = new Tenant("John", "Smith", Clock.Now.AddYears(-20));
+            tenant1.Account.Deposit(45);
+            hotel.RegisterTenant(tenant1);
+
+            DateTime date1 = Clock.Now;
+            DateTime date2 = Clock.Now.AddDays(5);
+            hotel.BookARoom(tenant1.ID, room1.ID, date1, date2);
+
+            Room room2 = new Room(500, RoomType.Luxury);
+            hotel.RegisterNewRoom(room2);
+
+            Tenant tenant2 = new Tenant("Laura", "Crowley", Clock.Now.AddYears(-20));
+            tenant2.Account.Deposit(15);
+            hotel.RegisterTenant(tenant2);
+
+            DateTime date3 = Clock.Now.AddDays(6);
+            DateTime date4 = Clock.Now.AddDays(10);
+            hotel.BookARoom(tenant2.ID, room2.ID, date3, date4);
+
+            Tenant tenant3 = new Tenant("John", "Smith", Clock.Now.AddYears(-20));
+            hotel.RegisterTenant(tenant3);
+
+            hotel.BookARoom(tenant3.ID, room2.ID, date1, date2);
+
+            Room room3 = new Room(500, RoomType.Luxury);
+            hotel.RegisterNewRoom(room3);
+            hotel.BookARoom(tenant1.ID, room3.ID, date1, date2);
+            hotel.CancelRoomReservation(tenant1.ID, room3.ID);
+
+            Clock.Offset = Clock.Offset.Add(new TimeSpan(2, 0, 0, 0));
+            //Act
+            List<Reservation> cancelledReservations = hotel.WithdrawDailyFee();
+            //Assert
+            Assert.AreEqual(0, tenant1.Account.Balance);
+            Assert.AreEqual(15, tenant2.Account.Balance);
+            Assert.AreEqual(0, tenant3.Account.Balance);
+            Assert.AreEqual(45, hotel.Account.Balance);
+            Assert.IsTrue(hotel.Reservations.Find(x => x.TenantID == tenant3.ID).IsDeleted);
+            Assert.AreEqual(1, cancelledReservations.Count);
+            Assert.AreEqual(tenant3.ID, cancelledReservations[0].TenantID);
+            Assert.AreEqual(0, (Clock.Now - hotel.LastFeeWithdrawal).TotalSeconds, 0.01);
+            Clock.Offset = TimeSpan.Zero;
+        }
+        [TestMethod]
+        public void WithdrawDailyFeeTest_Incorrect()
+        {
+            //Arrange
+            string name = "My Hotel";
+            string address = "3, Shevchenko st., Lviv, Ukraine";
+            Hotel hotel = new Hotel(name, address);
+            hotel.LastFeeWithdrawal = Clock.Now.AddDays(-1);
+
+            Room room1 = new Room(15, RoomType.Budget);
+            hotel.RegisterNewRoom(room1);
+
+            Tenant tenant1 = new Tenant("John", "Smith", Clock.Now.AddYears(-20));
+            tenant1.Account.Deposit(15);
+            hotel.RegisterTenant(tenant1);
+
+            DateTime date1 = Clock.Now;
+            DateTime date2 = Clock.Now.AddDays(5);
+            hotel.BookARoom(tenant1.ID, room1.ID, date1, date2);
+
+            Room room2 = new Room(500, RoomType.Luxury);
+            hotel.RegisterNewRoom(room2);
+
+            Tenant tenant2 = new Tenant("Laura", "Crowley", Clock.Now.AddYears(-20));
+            tenant2.Account.Deposit(15);
+            hotel.RegisterTenant(tenant2);
+
+            DateTime date3 = Clock.Now.AddDays(6);
+            DateTime date4 = Clock.Now.AddDays(10);
+            hotel.BookARoom(tenant2.ID, room2.ID, date3, date4);
+
+            Tenant tenant3 = new Tenant("John", "Smith", Clock.Now.AddYears(-20));
+            hotel.RegisterTenant(tenant3);
+
+            hotel.BookARoom(tenant3.ID, room2.ID, date1, date2);
+
+            Room room3 = new Room(500, RoomType.Luxury);
+            hotel.RegisterNewRoom(room3);
+            hotel.BookARoom(tenant1.ID, room3.ID, date1, date2);
+            hotel.CancelRoomReservation(tenant1.ID, room3.ID);
+            //Act
+            List<Reservation> cancelledReservations = hotel.WithdrawDailyFee();
+            //Assert
+            Assert.ThrowsException<Exception>(() => hotel.WithdrawDailyFee());
+            Assert.AreEqual(0, tenant1.Account.Balance);
+            Assert.AreEqual(15, tenant2.Account.Balance);
+            Assert.AreEqual(0, tenant3.Account.Balance);
+            Assert.AreEqual(15, hotel.Account.Balance);
+            Assert.IsTrue(hotel.Reservations.Find(x => x.TenantID == tenant3.ID).IsDeleted);
+            Assert.AreEqual(1, cancelledReservations.Count);
+            Assert.AreEqual(tenant3.ID, cancelledReservations[0].TenantID);
+            Assert.AreEqual(0, (Clock.Now - hotel.LastFeeWithdrawal).TotalSeconds, 0.01);
+        }
+        [TestMethod]
         public void HireStaffTest_Correct()
         {
             //Arrange
@@ -504,8 +615,8 @@ namespace TestProject
             string staffMemberLastName1 = "Smith";
             string staffMemberFirstName2 = "Lara";
             string staffMemberLastName2 = "Crowley";
-            DateTime birthDate1 = DateTime.Now.AddYears(-20);
-            DateTime birthDate2 = DateTime.Now.AddYears(-19);
+            DateTime birthDate1 = Clock.Now.AddYears(-20);
+            DateTime birthDate2 = Clock.Now.AddYears(-19);
             Job job1 = Job.Attendant;
             Job job2 = Job.Concierge;
             double salary1 = 25;
@@ -538,7 +649,7 @@ namespace TestProject
             Hotel hotel = new Hotel(name, address);
             string staffMemberFirstName = "John";
             string staffMemberLastName = "Smith";
-            DateTime birthDate = DateTime.Now.AddYears(-20);
+            DateTime birthDate = Clock.Now.AddYears(-20);
             Job job = Job.Attendant;
             double salary = 25;
             StaffMember staffMember = new StaffMember(staffMemberFirstName, staffMemberLastName, birthDate,job,salary);
@@ -557,7 +668,7 @@ namespace TestProject
             Hotel hotel = new Hotel(name, address);
             string staffMemberFirstName = "John";
             string staffMemberLastName = "Smith";
-            DateTime birthDate = DateTime.Now.AddYears(-20);
+            DateTime birthDate = Clock.Now.AddYears(-20);
             Job job = Job.Attendant;
             double salary = 25;
             StaffMember staffMember = new StaffMember(staffMemberFirstName, staffMemberLastName, birthDate, job, salary);
@@ -578,7 +689,7 @@ namespace TestProject
             Hotel hotel = new Hotel(name, address);
             string staffMemberFirstName = "John";
             string staffMemberLastName = "Smith";
-            DateTime birthDate = DateTime.Now.AddYears(-20);
+            DateTime birthDate = Clock.Now.AddYears(-20);
             Job job = Job.Attendant;
             double salary = 25;
             StaffMember staffMember = new StaffMember(staffMemberFirstName, staffMemberLastName, birthDate, job, salary);
@@ -600,18 +711,18 @@ namespace TestProject
             string staffMemberFirstName1 = "John";
             string staffMemberLastName1 = "Smith";
             Job job1 = Job.Attendant;
-            DateTime birthDate1 = DateTime.Now.AddYears(-20);
+            DateTime birthDate1 = Clock.Now.AddYears(-20);
             double salary1 = 25;
-            DateTime date1 = DateTime.Now.AddDays(-2);
+            DateTime date1 = Clock.Now.AddDays(-2);
             StaffMember staffMember1 = new StaffMember(staffMemberFirstName1, staffMemberLastName1, birthDate1, job1, salary1);
             staffMember1.LastSalaryPay = date1;
 
             string staffMemberFirstName2 = "Lara";
             string staffMemberLastName2 = "Crowley";
-            DateTime birthDate2 = DateTime.Now.AddYears(-19);
+            DateTime birthDate2 = Clock.Now.AddYears(-19);
             Job job2 = Job.Concierge;
             double salary2 = 75;
-            DateTime date2 = DateTime.Now.AddDays(-1);
+            DateTime date2 = Clock.Now.AddDays(-1);
             StaffMember staffMember2 = new StaffMember(staffMemberFirstName2, staffMemberLastName2, birthDate2, job2, salary2);
             staffMember2.LastSalaryPay = date2;
 
@@ -624,8 +735,8 @@ namespace TestProject
             Assert.AreEqual(75, hotel.Account.Balance);
             Assert.AreEqual(50,staffMember1.Account.Balance);
             Assert.AreEqual(75,staffMember2.Account.Balance);
-            Assert.AreEqual(0, (DateTime.Now-staffMember1.LastSalaryPay).TotalSeconds,0.01);
-            Assert.AreEqual(0, (DateTime.Now - staffMember2.LastSalaryPay).TotalSeconds, 0.01);
+            Assert.AreEqual(0, (Clock.Now-staffMember1.LastSalaryPay).TotalSeconds,0.01);
+            Assert.AreEqual(0, (Clock.Now - staffMember2.LastSalaryPay).TotalSeconds, 0.01);
         }
         [TestMethod]
         public void PayStaffSalariesTest_not_enough_funds()
@@ -638,18 +749,18 @@ namespace TestProject
             string staffMemberFirstName1 = "John";
             string staffMemberLastName1 = "Smith";
             Job job1 = Job.Attendant;
-            DateTime birthDate1 = DateTime.Now.AddYears(-20);
+            DateTime birthDate1 = Clock.Now.AddYears(-20);
             double salary1 = 25;
-            DateTime date1 = DateTime.Now.AddDays(-10);
+            DateTime date1 = Clock.Now.AddDays(-10);
             StaffMember staffMember1 = new StaffMember(staffMemberFirstName1, staffMemberLastName1, birthDate1, job1, salary1);
             staffMember1.LastSalaryPay = date1;
 
             string staffMemberFirstName2 = "Lara";
             string staffMemberLastName2 = "Crowley";
-            DateTime birthDate2 = DateTime.Now.AddYears(-19);
+            DateTime birthDate2 = Clock.Now.AddYears(-19);
             Job job2 = Job.Concierge;
             double salary2 = 75;
-            DateTime date2 = DateTime.Now.AddDays(-10);
+            DateTime date2 = Clock.Now.AddDays(-10);
             StaffMember staffMember2 = new StaffMember(staffMemberFirstName2, staffMemberLastName2, birthDate2, job2, salary2);
             staffMember2.LastSalaryPay = date2;
 
@@ -662,8 +773,8 @@ namespace TestProject
             Assert.AreEqual(0, hotel.Account.Balance);
             Assert.AreEqual(50, staffMember1.Account.Balance);
             Assert.AreEqual(150, staffMember2.Account.Balance);
-            Assert.AreEqual(0, (DateTime.Now.AddDays(-8) - staffMember1.LastSalaryPay).TotalSeconds, 0.01);
-            Assert.AreEqual(0, (DateTime.Now.AddDays(-8) - staffMember2.LastSalaryPay).TotalSeconds, 0.01);
+            Assert.AreEqual(0, (Clock.Now.AddDays(-8) - staffMember1.LastSalaryPay).TotalSeconds, 0.01);
+            Assert.AreEqual(0, (Clock.Now.AddDays(-8) - staffMember2.LastSalaryPay).TotalSeconds, 0.01);
         }
     }
 }

@@ -63,7 +63,7 @@ namespace OOP_Practice
             }
             set
             {
-                if (value > DateTime.Now.AddYears(-16) || value < DateTime.Now.AddYears(-200))
+                if (value > Clock.Now.AddYears(-16) || value < Clock.Now.AddYears(-200))
                     throw new ArgumentException("Для реєестрації жильця готелю, йому має бути більше 16 та менше 200 років!");
                 birthDate = value;
             }

@@ -15,9 +15,9 @@ namespace TestProject
         public void ConstructorTest_correct_Active()
         {
             //Arrange
-            DateTime date1 = DateTime.Now;
-            DateTime date2 = DateTime.Now.AddDays(5);
-            Tenant tenant = new Tenant("John", "Smith", DateTime.Now.AddYears(-20));
+            DateTime date1 = Clock.Now;
+            DateTime date2 = Clock.Now.AddDays(5);
+            Tenant tenant = new Tenant("John", "Smith", Clock.Now.AddYears(-20));
             int tenantID = tenant.ID;
             Room room = new Room(5, RoomType.Budget);
             int roomID = room.ID;
@@ -35,9 +35,9 @@ namespace TestProject
         public void ConstructorTest_correct_Inactive()
         {
             //Arrange
-            DateTime date1 = DateTime.Now.AddDays(1);
-            DateTime date2 = DateTime.Now.AddDays(5);
-            Tenant tenant = new Tenant("John", "Smith", DateTime.Now.AddYears(-20));
+            DateTime date1 = Clock.Now.AddDays(1);
+            DateTime date2 = Clock.Now.AddDays(5);
+            Tenant tenant = new Tenant("John", "Smith", Clock.Now.AddYears(-20));
             int tenantID = tenant.ID;
             Room room = new Room(5, RoomType.Budget);
             int roomID= room.ID;
@@ -55,9 +55,9 @@ namespace TestProject
         public void ConstructorTest_incorrect_StartDate()
         {
             //Arrange
-            DateTime date1 = DateTime.Now.AddDays(-1);
-            DateTime date2 = DateTime.Now.AddDays(5);
-            Tenant tenant = new Tenant("John", "Smith", DateTime.Now.AddYears(-20));
+            DateTime date1 = Clock.Now.AddDays(-1);
+            DateTime date2 = Clock.Now.AddDays(5);
+            Tenant tenant = new Tenant("John", "Smith", Clock.Now.AddYears(-20));
             int tenantID = tenant.ID;
             Room room = new Room(5, RoomType.Budget);
             int roomID = room.ID;
@@ -68,17 +68,17 @@ namespace TestProject
         public void ConstructorTest_incorrect_EndDate()
         {
             //Arrange
-            Tenant tenant = new Tenant("John", "Smith", DateTime.Now.AddYears(-20));
+            Tenant tenant = new Tenant("John", "Smith", Clock.Now.AddYears(-20));
             int tenantID = tenant.ID;
             Room room = new Room(5, RoomType.Budget);
             int roomID = room.ID;
 
-            DateTime date1 = DateTime.Now.AddDays(1);
-            DateTime date2 = DateTime.Now.AddDays(-5);
-            DateTime date3 = DateTime.Now.AddDays(5);
-            DateTime date4 = DateTime.Now.AddDays(1);
-            DateTime date5 = DateTime.Now.AddDays(1);
-            DateTime date6 = DateTime.Now.AddDays(1).AddHours(1);
+            DateTime date1 = Clock.Now.AddDays(1);
+            DateTime date2 = Clock.Now.AddDays(-5);
+            DateTime date3 = Clock.Now.AddDays(5);
+            DateTime date4 = Clock.Now.AddDays(1);
+            DateTime date5 = Clock.Now.AddDays(1);
+            DateTime date6 = Clock.Now.AddDays(1).AddHours(1);
             //Act + Assert
             Assert.ThrowsException<ArgumentException>(() => new Reservation(tenantID, roomID, date1, date2));
             Assert.ThrowsException<ArgumentException>(() => new Reservation(tenantID,roomID, date3, date4));
