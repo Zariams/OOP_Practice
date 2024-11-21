@@ -15,7 +15,7 @@ namespace TestProject
         public void ConstructorTest_correct_Active()
         {
             //Arrange
-            DateTime date1 = DateTime.Now.AddSeconds(-1);
+            DateTime date1 = DateTime.Now;
             DateTime date2 = DateTime.Now.AddDays(5);
             Tenant tenant = new Tenant("John", "Smith", DateTime.Now.AddYears(-20));
             int tenantID = tenant.ID;
