@@ -8,25 +8,65 @@ namespace OOP_Practice
 {
     public class Room : IComparable<Room>, ICloneable
     {
-        public static int Counter { get; private set; }
+        private int dailyCost;
+        private RoomType type;
+
+        public static int Counter { get; private set; } = 0;
        // public Hotel Hotel { get; set; }
         public int ID { get; private set; }
-        public RoomType Type { get; set; }
-        public int DailyCost { get; set; } 
-        //   public Tenant Tenant { get; set; }
-        //   public List<RoomReservation> Reservations { get; set; }
+        public RoomType Type {
 
+            get
+            {
+                return type;
+            }
+            set
+            {
+                if (Enum.IsDefined(typeof(RoomType),value))
+                {
+                    type = value;
+                }
+                else
+                {
+                    throw new ArgumentException("Значення не відповідає жодному відомому типу кімнати!");
+                }
+            }
+
+        }
+        public int DailyCost {
+
+            get
+            {
+                return dailyCost;
+            }
+            set
+            {
+                if (value > 0)
+                {
+                    dailyCost= value;
+                }
+                else
+                {
+                    throw new ArgumentException("Ціна на оренду кімнати не може бути від'ємною!");
+                }
+            } 
+        
+        } 
         public Room(int cost, RoomType roomType)
         {
-            throw new NotImplementedException();
+            this.DailyCost = cost;
+            this.Type = roomType;
+            Counter++;
+            this.ID = Counter;
+            
         }
         public object Clone()
         {
-            throw new NotImplementedException ();
+           return new Room(this.DailyCost, this.Type);
         }
         public int CompareTo(Room other)
         {
-            throw new NotImplementedException();
+           return (this.DailyCost.CompareTo(other.DailyCost));
         }
 
     }
