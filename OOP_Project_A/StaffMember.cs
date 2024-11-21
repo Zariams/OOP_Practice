@@ -9,20 +9,126 @@ namespace OOP_Practice
 {
     public class StaffMember : Person//, IComparable<StaffMember>
     {
-        public static int Counter { get; private set; }
-        public override string FirstName { get; set; }
-        public override string LastName { get; set; }
-        public override DateTime BirthDate { get; set; }
+        private string firstName;
+
+        private string lastName;
+        private DateTime birthDate;
+        private double salary;
+        private Job job;
+        private DateTime lastSalary;
+        public static int Counter { get; private set; } = 0;
+        public override string FirstName
+        {
+            get
+            {
+                return firstName;
+            }
+            set
+            {
+                if (String.IsNullOrEmpty(value))
+                    throw new ArgumentException("Ім'я не може бути порожнім!");
+                if (value.Length < 3 || value.Length > 12)
+                    throw new ArgumentException($"Ім'я не може бути коротшим за 3 символи та довшим за 12 символів (Введено: {value.Length})!");
+
+                foreach (char c in value)
+                {
+                    if ((c < 'a' || c > 'z') && (c < 'A' || c > 'Z'))
+                        throw new ArgumentException("Ім'я містить непідтримувані символи!");
+                }
+                firstName = value;
+            }
+        }
+        public override string LastName
+        {
+            get
+            {
+                return lastName;
+            }
+            set
+            {
+                if (String.IsNullOrEmpty(value))
+                    throw new ArgumentException("Прізвище не може бути порожнім!");
+                if (value.Length < 3 || value.Length > 12)
+                    throw new ArgumentException($"Прізвище не може бути коротшим за 3 символи та довшим за 12 символів (Введено: {value.Length})!");
+
+                foreach (char c in value)
+                {
+                    if ((c < 'a' || c > 'z') && (c < 'A' || c > 'Z'))
+                        throw new ArgumentException("Прізвище містить непідтримувані символи!");
+                }
+                lastName = value;
+            }
+        }
+        public override DateTime BirthDate
+        {
+            get
+            {
+                return birthDate;
+            }
+            set
+            {
+                if (value > DateTime.Now.AddYears(-18) || value < DateTime.Now.AddYears(-200))
+                    throw new ArgumentException("Для реєестрації робітника готелю, йому має бути більше 18 та менше 200 років!");
+                birthDate = value;
+            }
+        }
         public Account Account { get; private set; }
         public int ID { get; private set; }
-        public double DailyRate {  get ; set; }    
-        public Job Job { get; set; }
+        public double DailyRate
+        {
+            get
+            {
+                return salary;
+            }
+            set
+            {
+                if (value <= 0)
+                    throw new ArgumentException("Заробітна плата не може бути від'ємною!");
+                salary = value;
+            }
+        }    
+        public Job Job
+        {
+            get
+            {
+                return job;
+            }
+            set
+            {
+                if (Enum.IsDefined(typeof(Job), value))
+                {
+                    job = value;
+                }
+                else
+                {
+                    throw new ArgumentException("Значення не відповідає жодній відомій професії!");
+                }
+            }
+        }
         public bool IsFired { get; set; }
-        public DateTime LastSalaryPay { get; set; }
+        public DateTime LastSalaryPay {
+            get
+            {
+                return lastSalary;
+            }
+            set
+            {
+                if (value > DateTime.Now) throw new ArgumentException("Дата останнього отримання заробітної плати не може бути у майбутньому!");
+                lastSalary = value; 
+            }
+        }
 
         public StaffMember(string firstName,string lastName, DateTime birthDate, Job job, double salary)
         {
-            throw new NotImplementedException();
+            FirstName = firstName;
+            LastName = lastName;
+            Job = job;
+            BirthDate = birthDate;
+            DailyRate = salary;
+            Account = new Account();
+            LastSalaryPay = DateTime.Now;
+            Counter++;
+            ID = Counter;
         }
         /*public int CompareTo(StaffMember other)
         {

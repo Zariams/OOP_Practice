@@ -31,7 +31,7 @@ namespace TestProject
             Assert.AreEqual(currentCounter + 1, staffMember.ID);
             Assert.AreEqual(currentCounter + 1, StaffMember.Counter);
             Assert.IsFalse(staffMember.IsFired);
-            Assert.AreEqual(staffMember.LastSalaryPay,DateTime.Now);
+            Assert.AreEqual(0,(DateTime.Now-staffMember.LastSalaryPay).TotalSeconds,0.01);
             Assert.AreEqual(job, staffMember.Job);
         }
         [TestMethod]
@@ -144,7 +144,7 @@ namespace TestProject
             double salary = 75;
             StaffMember staffMember = new StaffMember(firstName, lastName, birthdate, Job.Other, salary);
             //Act + Assert
-            Assert.ThrowsException<Exception>(() => staffMember.Job = job);
+            Assert.ThrowsException<ArgumentException>(() => staffMember.Job = job);
         }
         [TestMethod]
         public void DailyRateTest_Correct()
@@ -174,7 +174,7 @@ namespace TestProject
             double salary = -75;
             StaffMember staffMember = new StaffMember(firstName, lastName, birthdate, job, 25);
             //Act + Assert
-            Assert.ThrowsException<Exception>(() => staffMember.DailyRate = salary);
+            Assert.ThrowsException<ArgumentException>(() => staffMember.DailyRate = salary);
         }
         [TestMethod]
         public void LastSalaryPay_Correct()
@@ -206,7 +206,7 @@ namespace TestProject
             StaffMember staffMember = new StaffMember(firstName, lastName, birthdate, job, salary);
             DateTime date = DateTime.Now.AddDays(10);
             //Act + Assert
-            Assert.ThrowsException<Exception>(() => staffMember.LastSalaryPay = date);
+            Assert.ThrowsException<ArgumentException>(() => staffMember.LastSalaryPay = date);
         }
       /*  [TestMethod]
         public void CompareToTest()
