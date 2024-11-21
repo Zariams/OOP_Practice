@@ -45,9 +45,10 @@ namespace TestProject
             Account account = new Account();
             account.Deposit(10);
             //Act
-            account.Withdraw(5);
+            bool result = account.Withdraw(5);
             //Assert
             Assert.AreEqual(5, account.Balance);
+            Assert.IsTrue(result);
         }
         [TestMethod]
         public void WithdrawTest_overdraft_correct()
@@ -57,9 +58,10 @@ namespace TestProject
             Account account = new Account();
             account.Deposit(10);
             //Act
-            account.Withdraw(11);
+            bool result =account.Withdraw(11);
             //Assert
             Assert.AreEqual(-1, account.Balance);
+            Assert.IsTrue(result);
         }
         [TestMethod]
         public void WithdrawTest_argument_not_positive()
@@ -77,8 +79,10 @@ namespace TestProject
             //Arrange
             Account account = new Account();
             account.Deposit(1);
-            //Act + Assert
-            Assert.ThrowsException<ArgumentException>(() => account.Withdraw(10));
+            //Act
+            bool result = account.Withdraw(100);
+            //Assert
+            Assert.IsFalse(result);
         }
     }
 }
