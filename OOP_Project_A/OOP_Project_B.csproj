@@ -73,6 +73,7 @@
     </ApplicationDefinition>
     <Compile Include="Account.cs" />
     <Compile Include="AccountState.cs" />
+    <Compile Include="Clock.cs" />
     <Compile Include="IBankAccount.cs" />
     <Compile Include="Job.cs" />
     <Compile Include="Person.cs" />

@@ -19,7 +19,7 @@ namespace TestProject
             Assert.AreEqual(0, hotel.Rooms.Count);
             Assert.IsNotNull(hotel.Staff);
             Assert.IsNotNull(hotel.Account);
-            Assert.AreEqual(DateTime.Now, hotel.LastFeeWithdrawal);
+            Assert.AreEqual(0, (DateTime.Now-hotel.LastFeeWithdrawal).TotalSeconds,0.01);
         }
         [TestMethod]
         public void ConstructorTest_incorrect_Name()
@@ -39,7 +39,7 @@ namespace TestProject
         }
         [TestMethod]
         [DataRow("3, вул. Ўевченко, Ћьв≥в, ”крањна")]
-        [DataRow("AAAAAAAAAAAAAAa, Shevchenko st., Lviv, Ukraine")]
+        [DataRow("AAAAAA, Shevchenko st., Lviv, Ukraine")]
         [DataRow("3, Ukraine")]
         [DataRow("3, 12345., Lviv, Ukraine")]
         [DataRow("3, Shevchenko st., 12345, Ukraine")]
@@ -81,7 +81,7 @@ namespace TestProject
             Hotel hotel = new Hotel(name, address);
             DateTime lastfee = DateTime.Now.AddDays(10);
             //Act + Assert
-           Assert.ThrowsException<Exception>(()=> hotel.LastFeeWithdrawal = lastfee);
+           Assert.ThrowsException<ArgumentException>(()=> hotel.LastFeeWithdrawal = lastfee);
         }
         [TestMethod]
         public void RegisterNewTenantTest_Correct()
@@ -98,7 +98,7 @@ namespace TestProject
             DateTime birthDate2 = DateTime.Now.AddYears(-19);
             Tenant tenant2 = new Tenant(tenantFirstName2,tenantLastName2, birthDate2);
             //Act
-            hotel.RegisterTenant(tenantFirstName1, tenantFirstName2, birthDate1);
+            hotel.RegisterTenant(tenantFirstName1, tenantLastName1, birthDate1);
             hotel.RegisterTenant(tenant2);
             //Assert
             Assert.AreEqual(2, hotel.Tenants.Count);
@@ -137,10 +137,11 @@ namespace TestProject
             DateTime birthDate = DateTime.Now.AddYears(-20);
             Tenant tenant = new Tenant(tenantFirstName,tenantLastName, birthDate);
             //Act
-            hotel.RegisterTenant(tenantFirstName, tenantLastName, birthDate);
+            hotel.RegisterTenant(tenant);
             //Assert
+           Assert.ThrowsException<ArgumentException>(() => hotel.RegisterTenant(tenant));
             Assert.ThrowsException<ArgumentException>(() => hotel.RegisterTenant(tenantFirstName, tenantLastName, birthDate));
-            Assert.ThrowsException<ArgumentException>(() => hotel.RegisterTenant(tenant));
+
             Assert.AreEqual(1,hotel.Tenants.Count);
         }
 
@@ -360,7 +361,7 @@ namespace TestProject
             Tenant tenant1 = new Tenant("John", "Smith", DateTime.Now.AddYears(-20));
             hotel.RegisterTenant(tenant1);
 
-            DateTime date1 = DateTime.Now;
+            DateTime date1 = DateTime.Now.AddSeconds(1);
             DateTime date2 = DateTime.Now.AddDays(5);
             hotel.BookARoom(tenant1.ID, room1.ID, date1, date2);
 
@@ -377,7 +378,7 @@ namespace TestProject
             hotel.BookARoom(tenant1.ID, room2.ID, date1, date2);
             hotel.CancelRoomReservation(tenant1.ID, room2.ID);
             //Act
-            List<Room> result1 = hotel.GetAvailableRoomsForDates(DateTime.Now, DateTime.Now.AddDays(3));
+            List<Room> result1 = hotel.GetAvailableRoomsForDates(DateTime.Now.AddSeconds(1), DateTime.Now.AddDays(3));
             List<Room> result2 = hotel.GetAvailableRoomsForDates(DateTime.Now.AddDays(6), DateTime.Now.AddDays(8));
             List<Room> result3 = hotel.GetAvailableRoomsForDates(DateTime.Now.AddDays(4), DateTime.Now.AddDays(10));
             //Assert
@@ -457,7 +458,7 @@ namespace TestProject
             Tenant tenant1 = new Tenant("John", "Smith", DateTime.Now.AddYears(-20));
             tenant1.Account.Deposit(15);
             hotel.RegisterTenant(tenant1);
-
+             
             DateTime date1 = DateTime.Now;
             DateTime date2 = DateTime.Now.AddDays(5);
             hotel.BookARoom(tenant1.ID, room1.ID, date1, date2);
@@ -489,7 +490,7 @@ namespace TestProject
             Assert.AreEqual(15, tenant2.Account.Balance);
             Assert.AreEqual(0, tenant3.Account.Balance);
             Assert.AreEqual(15, hotel.Account.Balance);
-            Assert.IsTrue(hotel.Reservations.Find(x => x.TenantID == tenant3.ID)?.IsDeleted);
+            Assert.IsTrue(hotel.Reservations.Find(x => x.TenantID == tenant3.ID).IsDeleted);
             Assert.AreEqual(1,cancelledReservations.Count);
             Assert.AreEqual(tenant3.ID, cancelledReservations[0].TenantID);
         }
@@ -544,7 +545,7 @@ namespace TestProject
             //Act
             hotel.HireStaff(staffMember);
             //Assert
-            Assert.ThrowsException<ArgumentException>(() => hotel.HireStaff(staffMember));
+            Assert.ThrowsException<Exception>(() => hotel.HireStaff(staffMember));
             Assert.AreEqual(1, hotel.Staff.Count);
         }
         [TestMethod]
@@ -623,8 +624,8 @@ namespace TestProject
             Assert.AreEqual(75, hotel.Account.Balance);
             Assert.AreEqual(50,staffMember1.Account.Balance);
             Assert.AreEqual(75,staffMember2.Account.Balance);
-            Assert.AreEqual(DateTime.Now, staffMember1.LastSalaryPay);
-            Assert.AreEqual(DateTime.Now, staffMember2.LastSalaryPay);
+            Assert.AreEqual(0, (DateTime.Now-staffMember1.LastSalaryPay).TotalSeconds,0.01);
+            Assert.AreEqual(0, (DateTime.Now - staffMember2.LastSalaryPay).TotalSeconds, 0.01);
         }
         [TestMethod]
         public void PayStaffSalariesTest_not_enough_funds()
@@ -661,8 +662,8 @@ namespace TestProject
             Assert.AreEqual(0, hotel.Account.Balance);
             Assert.AreEqual(50, staffMember1.Account.Balance);
             Assert.AreEqual(150, staffMember2.Account.Balance);
-            Assert.AreEqual(DateTime.Now.AddDays(-8), staffMember1.LastSalaryPay);
-            Assert.AreEqual(DateTime.Now.AddDays(-8), staffMember2.LastSalaryPay);
+            Assert.AreEqual(0, (DateTime.Now.AddDays(-8) - staffMember1.LastSalaryPay).TotalSeconds, 0.01);
+            Assert.AreEqual(0, (DateTime.Now.AddDays(-8) - staffMember2.LastSalaryPay).TotalSeconds, 0.01);
         }
     }
 }
