@@ -81,7 +81,7 @@ namespace OOP_Practice
         public List<Reservation> Reservations { get; private set; }
         public List<StaffMember> Staff { get; private set; }
         public Account Account { get; private set; }
-        public DateTime LastFeeWithdrawal
+        public DateTime LastRentWithdrawal
         {
             get
             {
@@ -131,11 +131,11 @@ namespace OOP_Practice
         public double GetExpectedRentPay()
         {
             double result = 0;
-            if (Clock.Now < LastFeeWithdrawal.AddDays(1))
+            if (Clock.Now < LastRentWithdrawal.AddDays(1))
                 return result;
-            for (int offset = 1; offset <= (Clock.Now - LastFeeWithdrawal).TotalDays; offset++)
+            for (int offset = 1; offset <= (Clock.Now - LastRentWithdrawal).TotalDays; offset++)
             {
-                DateTime date = LastFeeWithdrawal.AddDays(offset);
+                DateTime date = LastRentWithdrawal.AddDays(offset);
                 List<Reservation> activeReservations = Reservations.FindAll(book => book.IsActive(date) && !book.IsDeleted);
                 for (int i = 0; i < activeReservations.Count; i++)
                 {
@@ -230,14 +230,14 @@ namespace OOP_Practice
                 throw new Exception("Працівника готелю з цим ідентифікаційним номером не зареєстровано!");
             staff.IsFired = true;
         }
-        public List<Reservation> WithdrawDailyFee()
+        public List<Reservation> WithdrawRoomRent()
         {
-            if (Clock.Now < LastFeeWithdrawal.AddDays(1))
+            if (Clock.Now < LastRentWithdrawal.AddDays(1))
                 throw new Exception("Сьогодні орендна плата вже була знята!");
             List<Reservation> cancelledReservations = new List<Reservation>();
-            for (int offset = 1; offset <= (Clock.Now-LastFeeWithdrawal).TotalDays; offset++)
+            for (int offset = 1; offset <= (Clock.Now-LastRentWithdrawal).TotalDays; offset++)
             {
-                DateTime date = LastFeeWithdrawal.AddDays(offset);
+                DateTime date = LastRentWithdrawal.AddDays(offset);
                 List<Reservation> activeReservations = Reservations.FindAll(book => book.IsActive(date) && !book.IsDeleted);
                 for (int i = 0; i < activeReservations.Count; i++)
                 {
@@ -257,7 +257,7 @@ namespace OOP_Practice
                 }
                 cancelledReservations.AddRange(activeReservations.FindAll(book => book.IsDeleted));
             }
-            LastFeeWithdrawal = Clock.Now;
+            LastRentWithdrawal = Clock.Now;
             return cancelledReservations;
         }
         public void PayStaffSalaries()

@@ -19,7 +19,7 @@ namespace TestProject
             Assert.AreEqual(0, hotel.Rooms.Count);
             Assert.IsNotNull(hotel.Staff);
             Assert.IsNotNull(hotel.Account);
-            Assert.AreEqual(0, (Clock.Now-hotel.LastFeeWithdrawal).TotalSeconds,0.01);
+            Assert.AreEqual(0, (Clock.Now-hotel.LastRentWithdrawal).TotalSeconds,0.01);
         }
         [TestMethod]
         public void ConstructorTest_incorrect_Name()
@@ -68,9 +68,9 @@ namespace TestProject
             Hotel hotel = new Hotel(name, address);
             DateTime lastfee = Clock.Now.AddDays(-10);
             //Act
-            hotel.LastFeeWithdrawal = lastfee;
+            hotel.LastRentWithdrawal = lastfee;
             //Assert
-            Assert.AreEqual(lastfee, hotel.LastFeeWithdrawal); 
+            Assert.AreEqual(lastfee, hotel.LastRentWithdrawal); 
         }
         [TestMethod]
         public void LastFeeWithdrawalTest_Incorrect()
@@ -81,7 +81,7 @@ namespace TestProject
             Hotel hotel = new Hotel(name, address);
             DateTime lastfee = Clock.Now.AddDays(10);
             //Act + Assert
-           Assert.ThrowsException<ArgumentException>(()=> hotel.LastFeeWithdrawal = lastfee);
+           Assert.ThrowsException<ArgumentException>(()=> hotel.LastRentWithdrawal = lastfee);
         }
         [TestMethod]
         public void RegisterNewTenantTest_Correct()
@@ -454,7 +454,7 @@ namespace TestProject
             string name = "My Hotel";
             string address = "3, Shevchenko st., Lviv, Ukraine";
             Hotel hotel = new Hotel(name, address);
-            hotel.LastFeeWithdrawal = Clock.Now.AddDays(-1);
+            hotel.LastRentWithdrawal = Clock.Now.AddDays(-1);
 
             Room room1 = new Room(15, RoomType.Budget);
             hotel.RegisterNewRoom(room1);
@@ -488,7 +488,7 @@ namespace TestProject
             hotel.BookARoom(tenant1.ID, room3.ID, date1, date2);
             hotel.CancelRoomReservation(tenant1.ID, room3.ID);
             //Act
-            List<Reservation> cancelledReservations = hotel.WithdrawDailyFee();
+            List<Reservation> cancelledReservations = hotel.WithdrawRoomRent();
             //Assert
             Assert.AreEqual(0, tenant1.Account.Balance);
             Assert.AreEqual(15, tenant2.Account.Balance);
@@ -497,7 +497,7 @@ namespace TestProject
             Assert.IsTrue(hotel.Reservations.Find(x => x.TenantID == tenant3.ID).IsDeleted);
             Assert.AreEqual(1,cancelledReservations.Count);
             Assert.AreEqual(tenant3.ID, cancelledReservations[0].TenantID);
-            Assert.AreEqual(0, (Clock.Now - hotel.LastFeeWithdrawal).TotalSeconds, 0.01);
+            Assert.AreEqual(0, (Clock.Now - hotel.LastRentWithdrawal).TotalSeconds, 0.01);
         }
         [TestMethod]
         public void WithdrawDailyFeeTest_Correct_Multiple_Days()
@@ -506,7 +506,7 @@ namespace TestProject
             string name = "My Hotel";
             string address = "3, Shevchenko st., Lviv, Ukraine";
             Hotel hotel = new Hotel(name, address);
-            hotel.LastFeeWithdrawal = Clock.Now.AddDays(-1);
+            hotel.LastRentWithdrawal = Clock.Now.AddDays(-1);
 
             Room room1 = new Room(15, RoomType.Budget);
             hotel.RegisterNewRoom(room1);
@@ -542,7 +542,7 @@ namespace TestProject
 
             Clock.Offset = Clock.Offset.Add(new TimeSpan(2, 0, 0, 0));
             //Act
-            List<Reservation> cancelledReservations = hotel.WithdrawDailyFee();
+            List<Reservation> cancelledReservations = hotel.WithdrawRoomRent();
             //Assert
             Assert.AreEqual(0, tenant1.Account.Balance);
             Assert.AreEqual(15, tenant2.Account.Balance);
@@ -551,7 +551,7 @@ namespace TestProject
             Assert.IsTrue(hotel.Reservations.Find(x => x.TenantID == tenant3.ID).IsDeleted);
             Assert.AreEqual(1, cancelledReservations.Count);
             Assert.AreEqual(tenant3.ID, cancelledReservations[0].TenantID);
-            Assert.AreEqual(0, (Clock.Now - hotel.LastFeeWithdrawal).TotalSeconds, 0.01);
+            Assert.AreEqual(0, (Clock.Now - hotel.LastRentWithdrawal).TotalSeconds, 0.01);
             Clock.Offset = TimeSpan.Zero;
         }
         [TestMethod]
@@ -561,7 +561,7 @@ namespace TestProject
             string name = "My Hotel";
             string address = "3, Shevchenko st., Lviv, Ukraine";
             Hotel hotel = new Hotel(name, address);
-            hotel.LastFeeWithdrawal = Clock.Now.AddDays(-1);
+            hotel.LastRentWithdrawal = Clock.Now.AddDays(-1);
 
             Room room1 = new Room(15, RoomType.Budget);
             hotel.RegisterNewRoom(room1);
@@ -595,9 +595,9 @@ namespace TestProject
             hotel.BookARoom(tenant1.ID, room3.ID, date1, date2);
             hotel.CancelRoomReservation(tenant1.ID, room3.ID);
             //Act
-            List<Reservation> cancelledReservations = hotel.WithdrawDailyFee();
+            List<Reservation> cancelledReservations = hotel.WithdrawRoomRent();
             //Assert
-            Assert.ThrowsException<Exception>(() => hotel.WithdrawDailyFee());
+            Assert.ThrowsException<Exception>(() => hotel.WithdrawRoomRent());
             Assert.AreEqual(0, tenant1.Account.Balance);
             Assert.AreEqual(15, tenant2.Account.Balance);
             Assert.AreEqual(0, tenant3.Account.Balance);
@@ -605,7 +605,7 @@ namespace TestProject
             Assert.IsTrue(hotel.Reservations.Find(x => x.TenantID == tenant3.ID).IsDeleted);
             Assert.AreEqual(1, cancelledReservations.Count);
             Assert.AreEqual(tenant3.ID, cancelledReservations[0].TenantID);
-            Assert.AreEqual(0, (Clock.Now - hotel.LastFeeWithdrawal).TotalSeconds, 0.01);
+            Assert.AreEqual(0, (Clock.Now - hotel.LastRentWithdrawal).TotalSeconds, 0.01);
         }
         [TestMethod]
         public void HireStaffTest_Correct()
@@ -786,7 +786,7 @@ namespace TestProject
             string name = "My Hotel";
             string address = "3, Shevchenko st., Lviv, Ukraine";
             Hotel hotel = new Hotel(name, address);
-            hotel.LastFeeWithdrawal = Clock.Now.AddDays(-1);
+            hotel.LastRentWithdrawal = Clock.Now.AddDays(-1);
 
             Room room1 = new Room(15, RoomType.Budget);
             hotel.RegisterNewRoom(room1);

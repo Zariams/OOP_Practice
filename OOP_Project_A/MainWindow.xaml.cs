@@ -199,7 +199,7 @@ namespace OOP_Practice
         {
             try
             {
-                List<Reservation> cancelledReservations = hotel.WithdrawDailyFee();
+                List<Reservation> cancelledReservations = hotel.WithdrawRoomRent();
                
                 HotelUpdateInformation();
 
