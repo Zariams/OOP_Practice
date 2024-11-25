@@ -279,11 +279,14 @@ namespace TestProject
 
             DateTime date1 = Clock.Now;
             DateTime date2 = Clock.Now.AddDays(-5);
+            DateTime date3 = Clock.Now.AddDays(5);
+            hotel.BookARoom(tenant.ID, room.ID, date1, date3);
+
             //Act+Assert
 
             Assert.ThrowsException<ArgumentException>(() => hotel.BookARoom(tenant.ID, room.ID, date1, date2));
             Assert.ThrowsException<ArgumentException>(() => hotel.BookARoom(tenant.ID, room.ID, date2, date1));
-
+            Assert.ThrowsException<Exception>(() => hotel.BookARoom(tenant.ID, room.ID, date1, date3));
         }
         [TestMethod]
         public void CancelRoomReservationTest_Correct()
@@ -775,6 +778,86 @@ namespace TestProject
             Assert.AreEqual(150, staffMember2.Account.Balance);
             Assert.AreEqual(0, (Clock.Now.AddDays(-8) - staffMember1.LastSalaryPay).TotalSeconds, 0.01);
             Assert.AreEqual(0, (Clock.Now.AddDays(-8) - staffMember2.LastSalaryPay).TotalSeconds, 0.01);
+        }
+        [TestMethod]
+        public void GetExpectedRentPayTest()
+        {
+            //Arrange
+            string name = "My Hotel";
+            string address = "3, Shevchenko st., Lviv, Ukraine";
+            Hotel hotel = new Hotel(name, address);
+            hotel.LastFeeWithdrawal = Clock.Now.AddDays(-1);
+
+            Room room1 = new Room(15, RoomType.Budget);
+            hotel.RegisterNewRoom(room1);
+
+            Tenant tenant1 = new Tenant("John", "Smith", Clock.Now.AddYears(-20));
+            tenant1.Account.Deposit(15);
+            hotel.RegisterTenant(tenant1);
+
+            DateTime date1 = Clock.Now;
+            DateTime date2 = Clock.Now.AddDays(5);
+            hotel.BookARoom(tenant1.ID, room1.ID, date1, date2);
+
+            Room room2 = new Room(500, RoomType.Luxury);
+            hotel.RegisterNewRoom(room2);
+
+            Tenant tenant2 = new Tenant("Laura", "Crowley", Clock.Now.AddYears(-20));
+            tenant2.Account.Deposit(15);
+            hotel.RegisterTenant(tenant2);
+
+            DateTime date3 = Clock.Now.AddDays(6);
+            DateTime date4 = Clock.Now.AddDays(10);
+            hotel.BookARoom(tenant2.ID, room2.ID, date3, date4);
+
+            Tenant tenant3 = new Tenant("John", "Smith", Clock.Now.AddYears(-20));
+            hotel.RegisterTenant(tenant3);
+
+            hotel.BookARoom(tenant3.ID, room2.ID, date1, date2);
+
+            Room room3 = new Room(500, RoomType.Luxury);
+            hotel.RegisterNewRoom(room3);
+            hotel.BookARoom(tenant1.ID, room3.ID, date1, date2);
+            hotel.CancelRoomReservation(tenant1.ID, room3.ID);
+            //Act
+            double sum = hotel.GetExpectedRentPay();
+            //Assert
+            Assert.AreEqual(0, hotel.Account.Balance);
+            Assert.AreEqual(515, sum, 0.01);
+        }
+        [TestMethod]
+        public void GetExpectedSalaryTest() {
+            //Arrange
+            string name = "My Hotel";
+            string address = "3, Shevchenko st., Lviv, Ukraine";
+            Hotel hotel = new Hotel(name, address);
+
+            string staffMemberFirstName1 = "John";
+            string staffMemberLastName1 = "Smith";
+            Job job1 = Job.Attendant;
+            DateTime birthDate1 = Clock.Now.AddYears(-20);
+            double salary1 = 25;
+            DateTime date1 = Clock.Now.AddDays(-2);
+            StaffMember staffMember1 = new StaffMember(staffMemberFirstName1, staffMemberLastName1, birthDate1, job1, salary1);
+            staffMember1.LastSalaryPay = date1;
+
+            string staffMemberFirstName2 = "Lara";
+            string staffMemberLastName2 = "Crowley";
+            DateTime birthDate2 = Clock.Now.AddYears(-19);
+            Job job2 = Job.Concierge;
+            double salary2 = 75;
+            DateTime date2 = Clock.Now.AddDays(-1);
+            StaffMember staffMember2 = new StaffMember(staffMemberFirstName2, staffMemberLastName2, birthDate2, job2, salary2);
+            staffMember2.LastSalaryPay = date2;
+
+            hotel.HireStaff(staffMember1);
+            hotel.HireStaff(staffMember2);
+            hotel.Account.Deposit(200);
+            //Act
+            double sum = hotel.GetExpectedRentPay();
+            //Assert
+            Assert.AreEqual(200, hotel.Account.Balance);
+            Assert.AreEqual(0, sum);
         }
     }
 }
