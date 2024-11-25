@@ -69,7 +69,7 @@ namespace OOP_Practice
             }
         } 
         public Account Account { get; private set; }
-        public int ID { get; private set; }
+        public override int ID { get; }
         public Tenant(string firstName, string lastName, DateTime birthDate) {
             FirstName = firstName;
             LastName = lastName;
@@ -78,6 +78,10 @@ namespace OOP_Practice
             Counter++;
             ID = Counter;
            
+        }
+        public override string ToString()
+        {
+            return base.ToString() + ", Tenant";
         }
     }
 }

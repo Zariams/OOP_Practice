@@ -10,6 +10,7 @@ namespace OOP_Practice
     {
         public abstract string FirstName { get; set; }
         public abstract string LastName { get; set; }
+        public abstract int ID { get; }    
         public abstract DateTime BirthDate { get; set; }
 
      

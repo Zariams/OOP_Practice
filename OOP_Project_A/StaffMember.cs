@@ -73,7 +73,7 @@ namespace OOP_Practice
             }
         }
         public Account Account { get; private set; }
-        public int ID { get; private set; }
+        public override int ID { get; }
         public double DailyRate
         {
             get
@@ -129,6 +129,10 @@ namespace OOP_Practice
             LastSalaryPay = Clock.Now;
             Counter++;
             ID = Counter;
+        }
+        public override string ToString()
+        {
+            return base.ToString() + $", {Job}";
         }
         /*public int CompareTo(StaffMember other)
         {
