@@ -10,9 +10,17 @@
 ```mermaid
 classDiagram
 Hotel --> Tenant
+Hotel --> StaffMember
 Hotel --> Reservation
 Hotel --> Room
+Hotel ..> Clock: Use
 Tenant --* Account
+Tenant ..|> Person
+Tenant ..> Clock: Use
+StaffMember --o Job
+StaffMember ..|> Person
+StaffMember ..> Clock: Use
+Reservation ..> Clock: Use
 Account --* AccountState
 Account ..|> IBankAccount
 Room --o RoomType
@@ -20,7 +28,7 @@ Room --o RoomType
 <<Enumeration>> AccountState
 <<Enumeration>> RoomType
 <<Interface>> IBankAccount
-
+<<Enumeration>> Job
 ```
 Рисунок 1 – Виявлення та визначення елементів предметної області та зв’язки між ними
 
@@ -28,9 +36,17 @@ Room --o RoomType
 ```mermaid
 classDiagram
 Hotel --> Tenant
+Hotel --> StaffMember
 Hotel --> Reservation
 Hotel --> Room
+Hotel ..> Clock: Use
 Tenant --* Account
+Tenant ..|> Person
+Tenant ..> Clock: Use
+StaffMember --o Job
+StaffMember ..|> Person
+StaffMember ..> Clock: Use
+Reservation ..> Clock: Use
 Account --* AccountState
 Account ..|> IBankAccount
 Room --o RoomType
@@ -44,7 +60,13 @@ RoomType: Budget
 RoomType: Standard
 RoomType: Business
 RoomType: Luxury
-
+<<Enumeration>> Job
+Job: Janitor
+Job: Attendant
+Job: Receptionist
+Job: Concierge
+Job: Manager
+Job: Other
 <<Interface>> IBankAccount
 IBankAccount: Withdraw(double) bool
 IBankAccount: Deposit(double) void
@@ -56,8 +78,15 @@ class Reservation{
 + RoomID : int
 + IsActiveToday : bool
 + IsDeleted : bool
+- endDate: DateTime
+- startDate: DateTime
 }
   Reservation: + Reservation(int, int, DateTime, DateTime)
+Reservation: + IsActive(DateTime) bool
+class Clock{
+  + Offset : TimeSpan
+  + Now : DateTime
+}
 
 class Hotel{
 + Address : string
@@ -65,6 +94,12 @@ class Hotel{
 + Rooms: List<Room>
 + Tenants: List~Tenant~
 + Reservations : List~Reservation~
++ Staff: List<StaffMember>
++ Account: Account
++ LastRentWithdrawal: DateTime
+- name: string
+- address: string
+- lastWithdrawal: DateTime
 }
  Hotel: + Hotel(string,string)
  Hotel: + BookARoom(int, int, DateTime, DateTime) void
@@ -74,7 +109,13 @@ class Hotel{
  Hotel: + RegisterTenant(string,DateTime) void
  Hotel: + RegisterTenant(Tenant) void
  Hotel: + RegisterNewRoom(Room)  void
- Hotel: + WithdrawDailyFee()  void
+Hotel: + HireStaff(StaffMember)  void
+Hotel: + HireStaff(string, string, DateTime, Job, double)  void
+Hotel: + FireStaff(int) void
+Hotel: + GetExpectedRentPay() double
+Hotel: + GetExpectedTotalSalary() double
+ Hotel: + WithdrawRoomRent()  void
+ Hotel: + PayStaffSalaries()  void
 
 class Room{
 + DailyCost: int
@@ -86,16 +127,44 @@ class Room{
 
 class Tenant{
 + BirthDate: DateTIme
-+ Name: string
++ FirstName: string
++ LastName: string
 + Account: Account
 + ID : int
+- birthDate: DateTime
+- firstName: string
+- lastName: string
 }
-  Tenant: + Tenant(string, DateTime)
+  Tenant: + Tenant(string, string, DateTime)
 
+class Person{
++ BirthDate: DateTIme
++ FirstName: string
++ LastName: string
++ ID : int
+}
+  Person: + GetAge() int
+  Person: + ToString() string
+
+class StaffMember{
++ BirthDate: DateTIme
++ FirstName: string
++ LastName: string
++ Account: Account
++ ID : int
++ DailyRate: double
++ Job: Job
++ LastSalaryPay: DateTime
+- birthDate: DateTime
+- firstName: string
+- lastName: string
+}
+  StaffMember: + StaffMember(string, string, DateTime, Job, double)
+ StaffMember: + CompareTo(StaffMember) int
 class Account{
-+ OverdraftMax : double
 + Balance : double
 + State : AccountState
+- state : AccountState
 }
  Account: + Account()
 Account: + Withdraw(double) bool
