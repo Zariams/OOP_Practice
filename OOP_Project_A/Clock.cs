@@ -13,7 +13,6 @@ namespace OOP_Practice
         {
             get
             {
-                
                 return DateTime.Now.Add(Offset);
             }
         }

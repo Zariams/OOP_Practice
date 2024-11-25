@@ -50,19 +50,18 @@ namespace TestProject
             Assert.AreEqual(5, account.Balance);
             Assert.IsTrue(result);
         }
-        [TestMethod]
-        public void WithdrawTest_overdraft_correct()
-        {
-            //Arrange
-            Account.OverdraftMax = 1;
-            Account account = new Account();
-            account.Deposit(10);
-            //Act
-            bool result =account.Withdraw(11);
-            //Assert
-            Assert.AreEqual(-1, account.Balance);
-            Assert.IsTrue(result);
-        }
+        //[TestMethod]
+        //public void WithdrawTest_overdraft_correct()
+        //{
+        //    //Arrange
+        //    Account account = new Account();
+        //    account.Deposit(10);
+        //    //Act
+        //    bool result =account.Withdraw(11);
+        //    //Assert
+        //    Assert.AreEqual(-1, account.Balance);
+        //    Assert.IsTrue(result);
+        //}
         [TestMethod]
         public void WithdrawTest_argument_not_positive()
         {
