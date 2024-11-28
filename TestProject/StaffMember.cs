@@ -208,35 +208,5 @@ namespace TestProject
             //Act + Assert
             Assert.ThrowsException<ArgumentException>(() => staffMember.LastSalaryPay = date);
         }
-      /*  [TestMethod]
-        public void CompareToTest()
-        {
-            //Arrange
-            string firstName = "John";
-            string lastName = "Smith";
-            DateTime birthdate = new DateTime(1980, 1, 1);
-            int currentCounter = StaffMember.Counter;
-            Job job = Job.Concierge;
-            double salary = 35;
-            StaffMember staffMember1 = new StaffMember(firstName, lastName, birthdate, job, salary);
-            StaffMember staffMember2 = new StaffMember(firstName, lastName, birthdate, job, salary);
-            StaffMember staffMember3 = new StaffMember(firstName, lastName, birthdate, job, salary);
-            DateTime date1 = Clock.Now.AddDays(-10);
-            DateTime date2 = Clock.Now.AddDays(-5);
-            DateTime date3 = Clock.Now.AddDays(-10);
-            staffMember1.LastSalaryPay = date1;
-            staffMember2.LastSalaryPay = date2;
-            staffMember3.LastSalaryPay = date3;
-            //Act
-            int result12 = staffMember1.CompareTo(staffMember2);
-            int result21 = staffMember2.CompareTo(staffMember1);
-            int result13 = staffMember1.CompareTo(staffMember3);
-            int result31 = staffMember3.CompareTo(staffMember1);
-            //Assert
-            Assert.AreEqual(-1, result12);
-            Assert.AreEqual(1, result21);
-            Assert.AreEqual(0, result31);
-            Assert.AreEqual(0, result13);
-        }*/
     }
 }

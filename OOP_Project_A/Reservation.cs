@@ -19,7 +19,7 @@ namespace OOP_Practice
             {
                 if (value< Clock.Now.AddMinutes(-1))
                     throw new ArgumentException("Початкова дата не може бути у минулому!");
-                if (endDate == DateTime.MinValue || value.AddMinutes(1) < endDate.AddDays(-1))
+                if (endDate == DateTime.MinValue || value.AddMinutes(-1) < endDate.AddDays(-1))
                     startDate = value;
                 else
                     throw new ArgumentException("Початкова дата бронювання має передувати кінцевій даті більше, ніж на добу!");
@@ -35,7 +35,7 @@ namespace OOP_Practice
                 if (value < Clock.Now.AddMinutes(-1))
                     throw new ArgumentException("Кінцева дата не може бути у минулому!");
 
-                if (startDate == DateTime.MinValue || startDate.AddDays(1).AddMinutes(1) < value)
+                if (startDate == DateTime.MinValue || startDate.AddDays(1).AddMinutes(-1) < value)
                     endDate = value;
                 else
                     throw new ArgumentException("Кінцева дата бронювання не може передувати початковій даті менше, ніж на добу!");

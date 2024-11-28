@@ -63,8 +63,8 @@ namespace OOP_Practice
             }
             set
             {
-                if (value > Clock.Now.AddYears(-16) || value < Clock.Now.AddYears(-200))
-                    throw new ArgumentException("Для реєестрації жильця готелю, йому має бути більше 16 та менше 200 років!");
+                if (value > Clock.Now.AddYears(-16) || value < Clock.Now.AddYears(-120))
+                    throw new ArgumentException($"Для реєстрації жильця готелю, йому має бути більше 16 та менше 120 років!(Введено:{Clock.Now.Year - value.Year}");
                 birthDate = value;
             }
         } 

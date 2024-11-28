@@ -75,11 +75,24 @@ namespace OOP_Practice
                 //address = value;
             }
         }
-        public List<Tenant> Tenants { get; private set; }
+        private List<Person> people { get; set; }
+        public List<Tenant> Tenants { 
+            get 
+            {
+                return people.OfType<Tenant>().ToList();
+            }
+        }
+        public List<StaffMember> Staff
+        {
+            get
+            {
+                return people.OfType<StaffMember>().ToList();
+            }
+        }
 
         public List<Room> Rooms { get; private set; }
         public List<Reservation> Reservations { get; private set; }
-        public List<StaffMember> Staff { get; private set; }
+       
         public Account Account { get; private set; }
         public DateTime LastRentWithdrawal
         {
@@ -99,10 +112,11 @@ namespace OOP_Practice
             Name = name;
             Address = address;
             lastWithdrawal = Clock.Now;
-            Tenants = new List<Tenant>();
+          //  Tenants = new List<Tenant>();
+            people = new List<Person>();    
             Rooms = new List<Room>();
             Reservations = new List<Reservation>();
-            Staff = new List<StaffMember>();
+          //  Staff = new List<StaffMember>();
             Account = new Account();
 
         }
@@ -190,14 +204,14 @@ namespace OOP_Practice
             if (tenantRegistered)
                 throw new ArgumentException("Жильця готелю з цими даними вже зареєстровано!");
             Person newTenant = new Tenant(firstName, lastName, birthDate);
-            Tenants.Add((Tenant)newTenant);
+            people.Add(newTenant);
         }
         public void RegisterTenant(Tenant tenant)
         {
             bool tenantRegistered = Tenants.Find(x => x.ID == tenant.ID) is Tenant;
             if (tenantRegistered)
                 throw new ArgumentException("Жильця готелю з цим ідентифікаційним номером вже зареєстровано!");
-            Tenants.Add(tenant);
+            people.Add(tenant);
         }
 
         public void RegisterNewRoom(Room room)
@@ -213,7 +227,7 @@ namespace OOP_Practice
             bool staffRegistered = Staff.Find(x => x.ID == staff.ID && !x.IsFired) is StaffMember;
             if (staffRegistered)
                 throw new Exception("Працівника готелю з цим ідентифікаційним номером вже зареєстровано!");
-            Staff.Add(staff);
+            people.Add(staff);
         }
         public void HireStaff(string firstName, string lastName, DateTime birthDate, Job job, double salary)
         {
@@ -221,7 +235,7 @@ namespace OOP_Practice
             if (staffRegistered)
                 throw new ArgumentException("Робітника готелю з цими даними вже зареєстровано!");
             StaffMember staff = new StaffMember(firstName, lastName, birthDate,job,salary);
-            Staff.Add(staff);
+            people.Add(staff);
         }
         public void FireStaff(int ID)
         {

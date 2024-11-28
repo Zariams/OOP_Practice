@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -32,7 +33,8 @@ namespace OOP_Practice
                 "ID",
                 "Ім'я",
                 "Прізвище",
-                "Дата народження"
+                "Дата народження",
+                "Вік"
 
         };
         string[] parametreNamesStaff =
@@ -124,7 +126,7 @@ namespace OOP_Practice
                 TxtBx_Hotel_Reservations_Deleted.Text = hotel.Reservations.FindAll(x => !x.IsActiveToday && !x.IsDeleted).Count.ToString();
                 TxtBx_Hotel_Tenants.Text = hotel.Tenants.Count.ToString();
                 TxtBx_Hotel_Rooms.Text = hotel.Rooms.Count.ToString();
-                TxtBx_Hotel_Staff.Text = hotel.Staff.Count.ToString();
+                TxtBx_Hotel_Staff.Text = hotel.Staff.FindAll(x => !x.IsFired).Count.ToString();
                 Lbl_Hotel_Info.Content = $"Інформація про готель \"{hotel.Name}\"";
                 Lbl_Hotel_Control.Content = $"Керування готелем \"{hotel.Name}\"";
                 TxtBx_Hotel_Expected_Rent.Text = hotel.GetExpectedRentPay().ToString();
@@ -327,18 +329,20 @@ namespace OOP_Practice
                     output[i][1] = r.FirstName;
                     output[i][2] = r.LastName;
                     output[i][3] = r.BirthDate;
+                    output[i][4] = r.GetAge();  
                 }
                 Dtgrd_Tenant.ItemsSource = output;
                 if (selectedIndex == -1)
                 {
                     TxtBx_Tenant_Balance.Text = "";
-
+                    Lbl_Tenant_Name.Content = $"Керування балансом жильця";
                 }
                 else
                 {
                     Dtgrd_Tenant.SelectedIndex = selectedIndex; 
-                    Tenant tenant = hotel.Tenants[selectedIndex];
-                    TxtBx_Tenant_Balance.Text = tenant.Account.Balance.ToString();
+                    Person tenant = hotel.Tenants[selectedIndex];
+                    Lbl_Tenant_Name.Content = $"Керування балансом {tenant.ToString()}";
+                    TxtBx_Tenant_Balance.Text = ((Tenant)tenant).Account.Balance.ToString();
                 }
             }
         }
@@ -350,12 +354,13 @@ namespace OOP_Practice
             if (Dtgrd_Tenant.SelectedIndex == -1)
             {
                 TxtBx_Tenant_Balance.Text = "";
-
+                Lbl_Tenant_Name.Content = $"Керування балансом жильця";
             }
             else
             {
-                Tenant tenant = hotel.Tenants[Dtgrd_Tenant.SelectedIndex];
-                TxtBx_Tenant_Balance.Text = tenant.Account.Balance.ToString();
+                Person tenant = hotel.Tenants[Dtgrd_Tenant.SelectedIndex];
+                Lbl_Tenant_Name.Content = $"Керування балансом {tenant}";
+                TxtBx_Tenant_Balance.Text = ((Tenant)tenant).Account.Balance.ToString();
             }
         }
 
@@ -414,11 +419,14 @@ namespace OOP_Practice
         {
             try
             {
+
                 string firstName = TxtBx_Tenant_FirstName.Text;
                 string lastName = TxtBx_Tenant_LastName.Text;
-                DateTime date = Dtpckr_Tenant_Birthdate.SelectedDate ?? Clock.Now;
+                DateTime? date = Dtpckr_Tenant_Birthdate.SelectedDate;
+                if (date == null)
+                    throw new Exception("Будь ласка, оберіть дату народження у відповідному меню!");
                 //Person tenant = new Tenant(firstName, lastName, date);
-                hotel.RegisterTenant(firstName,lastName,date);
+                hotel.RegisterTenant(firstName,lastName,date??Clock.Now);
                 MessageBox.Show("Нового жильця було успішно зареєстровано!", "Повідомлення");
                 TenantsUpdateInfo();
             }
@@ -453,14 +461,15 @@ namespace OOP_Practice
                 if (selectedIndex == -1 || staffList.Count-1 < selectedIndex)
                 {
                     TxtBx_Staff_Balance.Text = "";
-
+                    Lbl_Staff_Name.Content = $"Керування балансом робітника";
                 }
                 else
                 {
 
                     Dtgrd_Staff.SelectedIndex = selectedIndex;
-                    StaffMember staff = staffList[selectedIndex];
-                    TxtBx_Staff_Balance.Text = staff.Account.Balance.ToString();
+                    Person staff = staffList[selectedIndex];
+                    Lbl_Staff_Name.Content = $"Керування балансом {staff}";
+                    TxtBx_Staff_Balance.Text = ((StaffMember)staff).Account.Balance.ToString();
                 }
             }
         }
@@ -471,17 +480,19 @@ namespace OOP_Practice
         private void Dtgrd_Staff_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+            List<StaffMember> staffList = hotel.Staff.FindAll(x => !x.IsFired);
             int selectedIndex = Dtgrd_Staff.SelectedIndex;
             if (selectedIndex == -1)
             {
                 TxtBx_Staff_Balance.Text = "";
-
+                Lbl_Staff_Name.Content = $"Керування балансом робітника";
             }
             else
             {
                 Dtgrd_Staff.SelectedIndex = selectedIndex;
-                StaffMember staff = hotel.Staff[selectedIndex];
-                TxtBx_Staff_Balance.Text = staff.Account.Balance.ToString();
+                Person staff = staffList[selectedIndex];
+                Lbl_Staff_Name.Content = $"Керування балансом {staff}";
+                TxtBx_Staff_Balance.Text = ((StaffMember)staff).Account.Balance.ToString();
             }
         }
 
@@ -493,11 +504,13 @@ namespace OOP_Practice
                     throw new Exception("Спочатку необхідно обрати професію зі списку!");
                 string firstName = TxtBx_Staff_FirstName.Text;
                 string lastName = TxtBx_Staff_LastName.Text;
-                DateTime date = Dtpckr_Staff_Birthdate.SelectedDate ?? Clock.Now;
+                DateTime? date = Dtpckr_Staff_Birthdate.SelectedDate;
+                if (date == null)
+                    throw new Exception("Будь ласка, оберіть дату народження у відповідному меню!");
                 double salary = Double.Parse(TxtBx_Staff_Salary.Text);
                 Job job = (Job)LstBx_Staff_Job.SelectedIndex;
                 //Person tenant = new Tenant(firstName, lastName, date);
-                hotel.HireStaff(firstName, lastName, date, job, salary);
+                hotel.HireStaff(firstName, lastName, date??Clock.Now, job, salary);
                 StaffUpdateInfo();
             }
             catch (FormatException)
@@ -589,7 +602,7 @@ namespace OOP_Practice
             else
             {
                 int selectedIndex = Dtgrd_Reservation.SelectedIndex;
-                List<Reservation> reservation = hotel.Reservations.FindAll(x => !x.IsDeleted);
+                List<Reservation> reservation = hotel.Reservations.FindAll(x => !x.IsDeleted&&x.EndDate>Clock.Now);
                 object[][] output = new object[reservation.Count][];
                 for (int i = 0; i < reservation.Count; i++)
                 {

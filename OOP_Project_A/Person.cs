@@ -20,7 +20,7 @@ namespace OOP_Practice
         }
         public override string ToString()
         {
-            return $"{FirstName} {LastName}, {BirthDate}";
+            return $"{FirstName} {LastName}, {BirthDate.ToShortDateString()}";
         }
     }
 }
