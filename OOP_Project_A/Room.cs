@@ -51,7 +51,34 @@ namespace OOP_Practice
                 }
             } 
         
-        } 
+        }
+
+        public static Func<Room,Room,int> Comparison;
+        public static void ChangeComparisonFunction(Func<Room,Room,int> comparison)
+        {
+            Comparison = comparison;
+        }
+        public static void ChooseComparisonFunction(int choiceNumber)
+        {
+            switch (choiceNumber)
+            {
+                case 0:
+                    ChangeComparisonFunction((room1, room2) => room1.DailyCost.CompareTo(room2.DailyCost));
+                    break;
+                case 1:
+                    ChangeComparisonFunction((room1, room2) => room1.Type.CompareTo(room2.Type));
+                    break;
+                case 2:
+                    ChangeComparisonFunction((room1, room2) => room1.ID.CompareTo(room2.ID));
+                    break;
+                default: throw new ArgumentException("Невірно заданий номер!");
+
+            }
+        }
+        static Room()
+        {
+            Room.ChooseComparisonFunction(2);
+        }
         public Room(int cost, RoomType roomType)
         {
             this.DailyCost = cost;
@@ -66,7 +93,10 @@ namespace OOP_Practice
         }
         public int CompareTo(Room other)
         {
-           return (this.DailyCost.CompareTo(other.DailyCost));
+            //return (this.DailyCost.CompareTo(other.DailyCost));
+            if (Comparison is null)
+                return 0;
+            return (Comparison.Invoke(this,other));
         }
 
     }
