@@ -80,14 +80,17 @@ namespace OOP_Practice
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             SetGridAppearance(Dtgrd_Room,parametreNamesRoom);
+            SetGridAppearance(Dtgrd_Reservation_Rooms, parametreNamesRoom);
             SetGridAppearance(Dtgrd_Reservation, parametreNamesReservation);
             SetGridAppearance(Dtgrd_Staff, parametreNamesStaff);
             SetGridAppearance(Dtgrd_Tenant, parametreNamesTenant);
+            SetGridAppearance(Dtgrd_Reservation_Tenants, parametreNamesTenant);
             LstBx_Room.ItemsSource = Enum.GetNames(typeof(RoomType));
             LstBx_Staff_Job.ItemsSource = Enum.GetNames(typeof(Job));
             AddListBoxScrollHandler(LstBx_Room);
             AddListBoxScrollHandler(LstBx_Staff_Job);
             SwitchCanvas(0);
+            Hotel.Message += (string message, string title) => MessageBox.Show(message, title);
         }
 
         private void SwitchCanvas(int i)
@@ -130,8 +133,11 @@ namespace OOP_Practice
                 Lbl_Hotel_Info.Content = $"Інформація про готель \"{hotel.Name}\"";
                 Lbl_Hotel_Control.Content = $"Керування готелем \"{hotel.Name}\"";
                 TxtBx_Hotel_Expected_Rent.Text = hotel.GetExpectedRentPay().ToString();
-                TxtBx_Hotel_Expected_Salary.Text = hotel.GetExpectedTotalSalary().ToString();
+                TxtBx_Hotel_Expected_Salary.Text = hotel.GetExpectedTotalSalary(Clock.Now).ToString();
                 MnuIt_Main.IsEnabled = true;
+                TxtBx_Hotel_LastDayCheck.Text = hotel.LastDayCheck.ToString();
+                TxtBx_Hotel_LastWeekCheck.Text = hotel.LastWeekCheck.ToString();
+                TxtBx_Hotel_LastMonthCheck.Text = hotel.LastMonthCheck.ToString();
             }
         }
         private void Canvas_Hotel_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -201,18 +207,18 @@ namespace OOP_Practice
         {
             try
             {
-                List<Reservation> cancelledReservations = hotel.WithdrawRoomRent();
+               hotel.WithdrawRoomRent(Clock.Now);
                
                 HotelUpdateInformation();
 
-                if (cancelledReservations.Count > 0)
+               /* if (cancelledReservations.Count > 0)
                 {
                     MessageBox.Show($"Через недостаток грошей на рахунках клієнтів, було скасовано {cancelledReservations.Count} оренд(и)", "Повідомлення");
                 }
                 else
                 {
                     MessageBox.Show("Орендна плата була успішно знята у повному обсязі!","Повідомлення");
-                }
+                }*/
             }
             catch (Exception ex)
             {
@@ -225,16 +231,16 @@ namespace OOP_Practice
             try
             {
                 double currentBalance = hotel.Account.Balance;
-                double expectedPay = hotel.GetExpectedTotalSalary();
-                hotel.PayStaffSalaries();
-                if (hotel.Account.Balance != currentBalance-expectedPay)
+                double expectedPay = hotel.GetExpectedTotalSalary(Clock.Now);
+                hotel.PayStaffSalaries(Clock.Now);
+               /* if (hotel.Account.Balance != currentBalance-expectedPay)
                 {
                     MessageBox.Show($"Через недостаток грошей на рахунку готелю, заробітну плату було виплачено не в повному обсязі!", "Повідомлення");
                 }
                 else
                 {
                     MessageBox.Show("Заробітну плату було успішно сплачено!", "Повідомлення");
-                }
+                }*/
                 HotelUpdateInformation();
             }
             catch (Exception ex)
@@ -242,9 +248,43 @@ namespace OOP_Practice
                 MessageBox.Show(ex.Message, "Помилка!");
             }
         }
-       
-        
-      
+
+
+        private void Btn_Hotel_CheckTime_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                hotel.CheckTime();
+                HotelUpdateInformation();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Помилка!");
+            }
+        }
+
+        private void RdBtn_Hotel_Rent_Checked(object sender, RoutedEventArgs e)
+        {
+            if (hotel != null)
+            if (RdBtn_Hotel_Rent_Daily.IsChecked ?? false)
+                hotel.ChooseRentInterval(0);
+            else if (RdBtn_Hotel_Rent_Weekly.IsChecked ?? false)
+                hotel.ChooseRentInterval(1);
+            else
+                hotel.ChooseRentInterval(2);
+        }
+
+        private void RdBtn_Hotel_Salary_Checked(object sender, RoutedEventArgs e)
+        {
+            if (hotel != null)
+                if (RdBtn_Hotel_Salary_Daily.IsChecked ?? false)
+                hotel.ChooseSalaryInterval(0);
+                else if (RdBtn_Hotel_Salary_Weekly.IsChecked ?? false)
+                hotel.ChooseSalaryInterval(1);
+                else
+                hotel.ChooseSalaryInterval(2);
+        }
+
         private void RoomsUpdateInfo()
         {
             if (hotel == null)
@@ -269,6 +309,16 @@ namespace OOP_Practice
                 Dtgrd_Room.ItemsSource = output;
                 Dtgrd_Room.SelectedIndex = selectedIndex;
             }
+        }
+        private void RdBtn_Room_Sort_Checked(object sender, RoutedEventArgs e)
+        {
+            if (RdBtn_Room_Sort_ID.IsChecked ?? false)
+                Room.ChooseComparisonFunction(2);
+            else if (RdBtn_Room_Sort_Cost.IsChecked ?? false)
+                Room.ChooseComparisonFunction(0);
+            else
+                Room.ChooseComparisonFunction(1);
+            RoomsUpdateInfo();
         }
         private void Canvas_Room_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -427,7 +477,7 @@ namespace OOP_Practice
                     throw new Exception("Будь ласка, оберіть дату народження у відповідному меню!");
                 //Person tenant = new Tenant(firstName, lastName, date);
                 hotel.RegisterTenant(firstName,lastName,date??Clock.Now);
-                MessageBox.Show("Нового жильця було успішно зареєстровано!", "Повідомлення");
+                //MessageBox.Show("Нового жильця було успішно зареєстровано!", "Повідомлення");
                 TenantsUpdateInfo();
             }
             catch (Exception ex)
@@ -586,7 +636,7 @@ namespace OOP_Practice
                 List<StaffMember> staffList = hotel.Staff.FindAll(x => !x.IsFired);
                 StaffMember staff = staffList[Dtgrd_Staff.SelectedIndex];
                 hotel.FireStaff(staff.ID);
-                MessageBox.Show("Робітника було успішно звільнено!", "Повідомлення");
+              //  MessageBox.Show("Робітника було успішно звільнено!", "Повідомлення");
                 StaffUpdateInfo();
             }
             catch (Exception ex)
@@ -618,6 +668,56 @@ namespace OOP_Practice
                     Dtgrd_Reservation.SelectedIndex = selectedIndex;
                    
             }
+            if (hotel == null)
+            {
+                Dtgrd_Reservation_Rooms.ItemsSource = null;
+            }
+            else
+            {
+                List<Room> rooms = hotel.Rooms;
+                rooms.Sort();
+                int selectedIndex = Dtgrd_Reservation_Rooms.SelectedIndex;
+                object[][] output = new object[rooms.Count][];
+
+                for (int i = 0; i < hotel.Rooms.Count; i++)
+                {
+                    output[i] = new object[parametreNamesRoom.Length];
+                    Room r = rooms[i];
+                    output[i][0] = r.ID;
+                    output[i][1] = r.DailyCost;
+                    output[i][2] = r.Type;
+                }
+                Dtgrd_Reservation_Rooms.ItemsSource = output;
+                Dtgrd_Reservation_Rooms.SelectedIndex = selectedIndex;
+            }
+            if (hotel == null)
+            {
+                Dtgrd_Reservation_Tenants.ItemsSource = null;
+            }
+            else
+            {
+                int selectedIndex = Dtgrd_Reservation_Tenants.SelectedIndex;
+                object[][] output = new object[hotel.Tenants.Count][];
+                for (int i = 0; i < hotel.Tenants.Count; i++)
+                {
+                    output[i] = new object[parametreNamesTenant.Length];
+                    Person r = hotel.Tenants[i];
+                    output[i][0] = r.ID;
+                    output[i][1] = r.FirstName;
+                    output[i][2] = r.LastName;
+                    output[i][3] = r.BirthDate;
+                    output[i][4] = r.GetAge();
+                }
+                Dtgrd_Reservation_Tenants.ItemsSource = output;
+                if (selectedIndex == -1)
+                {
+                  
+                }
+                else
+                {
+                    Dtgrd_Reservation_Tenants.SelectedIndex = selectedIndex;
+                }
+            }
         }
         private void Canvas_Reservation_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -627,12 +727,24 @@ namespace OOP_Practice
         {
             try
             {
-                int tenantId = int.Parse(TxtBx_Reservation_Tenant.Text);
-                int roomId = int.Parse(TxtBx_Reservation_Room.Text);
+                if (Dtgrd_Reservation_Tenants.SelectedIndex == -1)
+                    throw new Exception("Спочатку оберіть жильця у таблиці вище");
+                if (Dtgrd_Reservation_Rooms.SelectedIndex == -1)
+                    throw new Exception("Спочатку оберіть кімнату у таблиці вище");
+                if (Dtpckr_Reservation_Start.SelectedDate == null)
+                    throw new Exception("Будь ласка, оберіть дату початку бронювання");
+                if (Dtpckr_Reservation_End.SelectedDate == null)
+                    throw new Exception("Будь ласка, оберіть дату кінця бронювання");
+                Tenant tenant = hotel.Tenants[Dtgrd_Reservation_Tenants.SelectedIndex];
+                Room room = hotel.Rooms[Dtgrd_Reservation_Rooms.SelectedIndex];
+                //  int tenantId = int.Parse(TxtBx_Reservation_Tenant.Text);
+                //  int roomId = int.Parse(TxtBx_Reservation_Room.Text);
+                int tenantId = tenant.ID;
+                int roomId = room.ID;   
                 DateTime start = Dtpckr_Reservation_Start.SelectedDate?.AddHours(Clock.Now.Hour).AddMinutes(Clock.Now.Minute + 1) ?? Clock.Now;
                 DateTime end = Dtpckr_Reservation_End.SelectedDate?.AddHours(Clock.Now.Hour).AddMinutes(Clock.Now.Minute+1) ?? Clock.Now;
                 hotel.BookARoom(tenantId, roomId, start, end);
-                MessageBox.Show("Кімнату було успішно заброньовано!","Повідомлення");
+                //MessageBox.Show("Кімнату було успішно заброньовано!","Повідомлення");
                 ReservationUpdateInfo();
             }
             catch (FormatException)
@@ -648,10 +760,20 @@ namespace OOP_Practice
         {
             try
             {
-                int tenantId = int.Parse(TxtBx_Reservation_Tenant.Text);
-                int roomId = int.Parse(TxtBx_Reservation_Room.Text);
-                hotel.CancelRoomReservation(tenantId, roomId);
-                MessageBox.Show("Оренду було успішно скасовано!", "Повідомлення");
+                /*if (Dtgrd_Reservation_Tenants.SelectedIndex == -1)
+                    throw new Exception("Спочатку оберіть жильця у таблиці вище");
+                if (Dtgrd_Reservation_Rooms.SelectedIndex == -1)
+                    throw new Exception("Спочатку оберіть кімнату у таблиці вище");
+                Tenant tenant = hotel.Tenants[Dtgrd_Reservation_Tenants.SelectedIndex];
+                Room room = hotel.Rooms[Dtgrd_Reservation_Rooms.SelectedIndex];
+                int tenantId = tenant.ID;
+                int roomId = room.ID;
+                hotel.CancelRoomReservation(tenantId, roomId);*/
+                if (Dtgrd_Reservation.SelectedIndex == -1)
+                    throw new Exception("Спочатку оберіть бронювання у таблиці вище!");
+                Reservation book = hotel.Reservations.FindAll(x => !x.IsDeleted && x.EndDate > Clock.Now)[Dtgrd_Reservation.SelectedIndex];
+                hotel.CancelRoomReservation(book);
+                //MessageBox.Show("Оренду було успішно скасовано!", "Повідомлення");
                 ReservationUpdateInfo();
             }
             catch (FormatException)
@@ -765,5 +887,7 @@ namespace OOP_Practice
 
 
         }
+
+       
     }
 }

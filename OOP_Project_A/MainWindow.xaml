@@ -5,8 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OOP_Practice"
         mc:Ignorable="d"
-        Title="Заря М.С. 623П - Проект, частина Б" Height="500
-        " Width="820" ResizeMode="NoResize" Loaded="Window_Loaded">
+        Title="Заря М.С. 623П - Проект, частина Б" Height="600" Width="920" ResizeMode="NoResize" Loaded="Window_Loaded">
     <Grid>
         <Menu x:Name="Menu_MainMenu" Height="25" VerticalAlignment="Top" IsEnabled="True">
             <MenuItem x:Name="MnuIt_Main" Header="Меню"  FontFamily="Arial" HorizontalAlignment="Right" VerticalAlignment="Top" Height="25.8" FontWeight="Bold" FontSize="16" IsEnabled="False" >
@@ -27,56 +26,78 @@ FontFamily="Arial" HorizontalAlignment="Left" VerticalAlignment="Top" Height="25
             </MenuItem>
 
         </Menu>
-        <Canvas x:Name="Canvas_Hotel" Margin="0,25,0,0" IsVisibleChanged="Canvas_Hotel_IsVisibleChanged" Visibility="Hidden">
+        <Canvas x:Name="Canvas_Hotel" Margin="0,25,0,0" IsVisibleChanged="Canvas_Hotel_IsVisibleChanged">
             <Label Content="Створити новий готель" HorizontalContentAlignment="Center" Canvas.Left="225" HorizontalAlignment="Center" VerticalAlignment="Top" Width="350" FontSize="20" FontFamily="Times New Roman"/>
-            <Canvas x:Name="Canvas_Hotel_Extended" Height="344" Width="800" HorizontalAlignment="Center" Canvas.Top="90" VerticalAlignment="Top">
-                <TextBox x:Name="TxtBx_Hotel_Rooms" Canvas.Left="256" TextWrapping="Wrap" Canvas.Top="44" Width="134" FontSize="16" FontFamily="Times New Roman" HorizontalAlignment="Left" VerticalAlignment="Top" IsReadOnly="True"/>
-                <Label Content="Кількість кімнат:" Canvas.Left="32" Canvas.Top="40" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" Width="214"/>
-                <TextBox x:Name="TxtBx_Hotel_Tenants" Canvas.Left="629" TextWrapping="Wrap" Canvas.Top="44" Width="134" FontSize="16" FontFamily="Times New Roman" HorizontalAlignment="Left" VerticalAlignment="Top" IsReadOnly="True"/>
-                <Label Content="Кількість жильців:&#xD;&#xA;" Canvas.Left="395" Canvas.Top="40" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" Width="219" Height="48"/>
-                <TextBox x:Name="TxtBx_Hotel_Staff" Canvas.Left="256" TextWrapping="Wrap" Canvas.Top="77" Width="134" FontSize="16" FontFamily="Times New Roman" HorizontalAlignment="Left" VerticalAlignment="Top" IsReadOnly="True"/>
-                <Label Content="Кількість робітників:" Canvas.Left="32" Canvas.Top="73" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" Width="214"/>
-                <TextBox x:Name="TxtBx_Hotel_Reservations_Active" Canvas.Left="256" TextWrapping="Wrap" Canvas.Top="112" Width="134" FontSize="16" FontFamily="Times New Roman" HorizontalAlignment="Left" VerticalAlignment="Top" IsReadOnly="True"/>
-                <Label Content="Кількість активних бронювань:" Canvas.Left="32" Canvas.Top="108" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <TextBox x:Name="TxtBx_Hotel_Reservations_Total" Canvas.Left="629" TextWrapping="Wrap" Canvas.Top="77" Width="134" FontSize="16" FontFamily="Times New Roman" HorizontalAlignment="Left" VerticalAlignment="Top" IsReadOnly="True"/>
-                <Label Content="Загальна кількість бронювань:" Canvas.Left="395" Canvas.Top="73" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" Width="233"/>
-                <TextBox x:Name="TxtBx_Hotel_Reservations_Deleted" Canvas.Left="629" TextWrapping="Wrap" Canvas.Top="112" Width="134" FontSize="16" FontFamily="Times New Roman" HorizontalAlignment="Left" VerticalAlignment="Top" IsReadOnly="True"/>
-                <Label Content="Кількість очікуваних бронювань:" Canvas.Left="395" Canvas.Top="108" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <TextBox x:Name="TxtBx_Hotel_Balance" Canvas.Left="230" TextWrapping="Wrap" Canvas.Top="189" Width="239" FontSize="16" FontFamily="Times New Roman" HorizontalAlignment="Center" VerticalAlignment="Top" IsReadOnly="True"/>
-                <Label Content="Баланс готелю, $:" Canvas.Left="34" Canvas.Top="186" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Top" Width="194"/>
-                <TextBox x:Name="TxtBx_Hotel_Balance_Change" Canvas.Left="230" TextWrapping="Wrap" Canvas.Top="222" Width="239" FontSize="16" FontFamily="Times New Roman" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <Label Content="Сума, $:" Canvas.Left="34" Canvas.Top="219" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" Width="191"/>
-                <TextBox x:Name="TxtBx_Hotel_Expected_Rent" Canvas.Left="230" TextWrapping="Wrap" Canvas.Top="267" Width="239" FontSize="16" FontFamily="Times New Roman" HorizontalAlignment="Center" VerticalAlignment="Top" IsReadOnly="True"/>
-                <Label Content="Очікується орендна плата:" Canvas.Left="34" Canvas.Top="263" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                <Button x:Name="Btn_Hotel_Balance_Withdraw" Content="Зняти" Canvas.Left="484" Canvas.Top="219" FontSize="16" FontWeight="Bold" Height="27" Width="104" HorizontalAlignment="Center" VerticalAlignment="Top" Click="Btn_Hotel_Balance_Withdraw_Click"/>
-                <Button x:Name="Btn_Hotel_Balance_Deposit" Content="Покласти" Canvas.Left="600"  Canvas.Top="219" FontSize="16" FontWeight="Bold" Height="27" Width="104" HorizontalAlignment="Left" VerticalAlignment="Top" Click="Btn_Hotel_Balance_Deposit_Click"/>
-                <TextBox x:Name="TxtBx_Hotel_Expected_Salary" Canvas.Left="230" TextWrapping="Wrap" Canvas.Top="299" Width="239" FontSize="16" FontFamily="Times New Roman" HorizontalAlignment="Center" VerticalAlignment="Top" IsReadOnly="True"/>
-                <Label Content="Очікується заробітна плата:" Canvas.Left="34" Canvas.Top="295" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                <Label x:Name="Lbl_Hotel_Control" Content="Керування готелем " HorizontalContentAlignment="Center" FontSize="20" FontFamily="Times New Roman" HorizontalAlignment="Center" Height="33" Canvas.Left="225" Canvas.Top="141" VerticalAlignment="Top" Width="350"/>
-                <Label x:Name="Lbl_Hotel_Info" Content="Інформація про готель" HorizontalContentAlignment="Center" FontSize="20" FontFamily="Times New Roman" HorizontalAlignment="Center" Height="33" Canvas.Left="225" VerticalAlignment="Top" Width="350"/>
-                <Button x:Name="Btn_Hotel_PaySalary" Content="Сплатити" Canvas.Left="484" Canvas.Top="296" FontSize="16" FontWeight="Bold" Height="27" Width="104" HorizontalAlignment="Left" VerticalAlignment="Top" Click="Btn_Hotel_PaySalary_Click"/>
-                <Button x:Name="Btn_Hotel_WithdrawRent" Content="Зняти" Canvas.Left="484" Canvas.Top="264" FontSize="16" FontWeight="Bold" Height="27" Width="104" HorizontalAlignment="Center" VerticalAlignment="Top" Click="Btn_Hotel_WithdrawRent_Click"/>
+            <Canvas x:Name="Canvas_Hotel_Extended" Height="482" Width="920" HorizontalAlignment="Center" Canvas.Top="77" VerticalAlignment="Top">
+                <TextBox x:Name="TxtBx_Hotel_Rooms" Canvas.Left="249" TextWrapping="Wrap" Canvas.Top="40" Width="134" FontSize="16" FontFamily="Times New Roman" HorizontalAlignment="Left" VerticalAlignment="Top" IsReadOnly="True"/>
+                <Label Content="Кількість кімнат:" Canvas.Left="25" Canvas.Top="36" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" Width="214"/>
+                <TextBox x:Name="TxtBx_Hotel_Tenants" Canvas.Left="747" TextWrapping="Wrap" Canvas.Top="44" Width="134" FontSize="16" FontFamily="Times New Roman" HorizontalAlignment="Left" VerticalAlignment="Top" IsReadOnly="True"/>
+                <Label Content="Кількість жильців:&#xD;&#xA;" Canvas.Left="513" Canvas.Top="40" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" Width="218" Height="48"/>
+                <TextBox x:Name="TxtBx_Hotel_Staff" Canvas.Left="249" TextWrapping="Wrap" Canvas.Top="73" Width="134" FontSize="16" FontFamily="Times New Roman" HorizontalAlignment="Left" VerticalAlignment="Top" IsReadOnly="True"/>
+                <Label Content="Кількість робітників:" Canvas.Left="25" Canvas.Top="69" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" Width="214"/>
+                <TextBox x:Name="TxtBx_Hotel_Reservations_Active" Canvas.Left="249" TextWrapping="Wrap" Canvas.Top="108" Width="134" FontSize="16" FontFamily="Times New Roman" HorizontalAlignment="Left" VerticalAlignment="Top" IsReadOnly="True"/>
+                <Label Content="Кількість активних бронювань:" Canvas.Left="25" Canvas.Top="104" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <TextBox x:Name="TxtBx_Hotel_Reservations_Total" Canvas.Left="747" TextWrapping="Wrap" Canvas.Top="77" Width="134" FontSize="16" FontFamily="Times New Roman" HorizontalAlignment="Left" VerticalAlignment="Top" IsReadOnly="True"/>
+                <Label Content="Загальна кількість бронювань:" Canvas.Left="513" Canvas.Top="73" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" Width="232"/>
+                <TextBox x:Name="TxtBx_Hotel_Reservations_Deleted" Canvas.Left="747" TextWrapping="Wrap" Canvas.Top="112" Width="134" FontSize="16" FontFamily="Times New Roman" HorizontalAlignment="Left" VerticalAlignment="Top" IsReadOnly="True"/>
+                <Label Content="Кількість очікуваних бронювань:" Canvas.Left="513" Canvas.Top="108" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <TextBox x:Name="TxtBx_Hotel_Balance" Canvas.Left="230" TextWrapping="Wrap" Canvas.Top="175" Width="239" FontSize="16" FontFamily="Times New Roman" HorizontalAlignment="Center" VerticalAlignment="Top" IsReadOnly="True"/>
+                <Label Content="Баланс готелю, $:" Canvas.Left="34" Canvas.Top="172" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Top" Width="194"/>
+                <TextBox x:Name="TxtBx_Hotel_Balance_Change" Canvas.Left="230" TextWrapping="Wrap" Canvas.Top="208" Width="239" FontSize="16" FontFamily="Times New Roman" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <Label Content="Сума, $:" Canvas.Left="34" Canvas.Top="205" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Top" Width="191"/>
+                <TextBox x:Name="TxtBx_Hotel_Expected_Rent" Canvas.Left="230" TextWrapping="Wrap" Canvas.Top="253" Width="239" FontSize="16" FontFamily="Times New Roman" HorizontalAlignment="Center" VerticalAlignment="Top" IsReadOnly="True"/>
+                <Label Content="Очікується орендна плата:" Canvas.Left="34" Canvas.Top="249" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <Button x:Name="Btn_Hotel_Balance_Withdraw" Content="Зняти" Canvas.Left="484" Canvas.Top="205" FontSize="16" FontWeight="Bold" Height="27" Width="104" HorizontalAlignment="Center" VerticalAlignment="Top" Click="Btn_Hotel_Balance_Withdraw_Click"/>
+                <Button x:Name="Btn_Hotel_Balance_Deposit" Content="Покласти" Canvas.Left="600"  Canvas.Top="205" FontSize="16" FontWeight="Bold" Height="27" Width="104" HorizontalAlignment="Center" VerticalAlignment="Top" Click="Btn_Hotel_Balance_Deposit_Click"/>
+                <TextBox x:Name="TxtBx_Hotel_Expected_Salary" Canvas.Left="230" TextWrapping="Wrap" Canvas.Top="285" Width="239" FontSize="16" FontFamily="Times New Roman" HorizontalAlignment="Center" VerticalAlignment="Top" IsReadOnly="True"/>
+                <Label Content="Очікується заробітна плата:" Canvas.Left="34" Canvas.Top="281" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <Label x:Name="Lbl_Hotel_Control" Content="Керування готелем " HorizontalContentAlignment="Center" FontSize="20" FontFamily="Times New Roman" HorizontalAlignment="Center" Height="33" Canvas.Left="270" Canvas.Top="133" VerticalAlignment="Top" Width="350"/>
+                <Label x:Name="Lbl_Hotel_Info" Content="Інформація про готель" HorizontalContentAlignment="Center" FontSize="20" FontFamily="Times New Roman" HorizontalAlignment="Left" Height="33" Canvas.Left="270" VerticalAlignment="Center" Width="350"/>
+                <Button x:Name="Btn_Hotel_PaySalary" Content="Сплатити" Canvas.Left="484" Canvas.Top="282" FontSize="16" FontWeight="Bold" Height="27" Width="104" HorizontalAlignment="Center" VerticalAlignment="Top" Click="Btn_Hotel_PaySalary_Click"/>
+                <Button x:Name="Btn_Hotel_WithdrawRent" Content="Зняти" Canvas.Left="484" Canvas.Top="250" FontSize="16" FontWeight="Bold" Height="27" Width="104" HorizontalAlignment="Center" VerticalAlignment="Top" Click="Btn_Hotel_WithdrawRent_Click"/>
+                <TextBox x:Name="TxtBx_Hotel_LastDayCheck" Canvas.Left="325" TextWrapping="Wrap" Canvas.Top="369" Width="239" FontSize="16" FontFamily="Times New Roman" IsReadOnly="True" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <Label Content="Дата останньої щодневної виплати:" Canvas.Left="35" Canvas.Top="364" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <TextBox x:Name="TxtBx_Hotel_LastWeekCheck" Canvas.Left="325" TextWrapping="Wrap" Canvas.Top="402" Width="239" FontSize="16" FontFamily="Times New Roman" IsReadOnly="True" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <Label Content="Дата останньої щотижневої виплати:" Canvas.Left="35" Canvas.Top="397" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <TextBox x:Name="TxtBx_Hotel_LastMonthCheck" Canvas.Left="325" TextWrapping="Wrap" Canvas.Top="435" Width="239" FontSize="16" FontFamily="Times New Roman" IsReadOnly="True" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <Label Content="Дата останньої щомісячної виплати:" Canvas.Left="35" Canvas.Top="430" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <Canvas Height="93" Width="135" Canvas.Left="600" Canvas.Top="249" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <RadioButton x:Name="RdBtn_Hotel_Rent_Daily" Content="Оренда сплачується&#xD;&#xA;щодня" IsChecked="True" Checked="RdBtn_Hotel_Rent_Checked"/>
+                    <RadioButton x:Name="RdBtn_Hotel_Rent_Weekly" Content="Оренда сплачується&#xA;щотижня" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Top="29" Checked="RdBtn_Hotel_Rent_Checked"/>
+                    <RadioButton x:Name="RdBtn_Hotel_Rent_Monthly" Content="Оренда сплачується&#xA;щомісяць" Canvas.Top="60" HorizontalAlignment="Center" VerticalAlignment="Top" Checked="RdBtn_Hotel_Rent_Checked"/>
+                </Canvas>
+                <Canvas Height="93" Width="156" Canvas.Left="754" Canvas.Top="250" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <RadioButton x:Name="RdBtn_Hotel_Salary_Daily" Content="Зарплата сплачується&#xA;щодня" IsChecked="True" Checked="RdBtn_Hotel_Salary_Checked"/>
+                    <RadioButton x:Name="RdBtn_Hotel_Salary_Weekly" Content="Зарплата сплачується&#xA;щотижня" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Top="29" Checked="RdBtn_Hotel_Salary_Checked"/>
+                    <RadioButton x:Name="RdBtn_Hotel_Salary_Monthly" Content="Зарплата сплачується&#xA;щомісяць" Canvas.Top="60" HorizontalAlignment="Center" VerticalAlignment="Top" Checked="RdBtn_Hotel_Salary_Checked"/>
+                </Canvas>
+                <Button x:Name="Btn_Hotel_CheckTime" Content="Оновити" Canvas.Left="579" Canvas.Top="398" FontSize="16" FontWeight="Bold" Height="27" Width="104" Click="Btn_Hotel_CheckTime_Click" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <Label Content="Автоматичні виплати" HorizontalContentAlignment="Center" FontSize="20" FontFamily="Times New Roman" Height="33" Canvas.Left="270" Canvas.Top="319" Width="350" HorizontalAlignment="Center" VerticalAlignment="Top"/>
 
             </Canvas>
             <TextBox x:Name="TxtBx_Hotel_Name" Canvas.Left="112" TextWrapping="Wrap" Canvas.Top="54" Width="233" FontSize="16" FontFamily="Times New Roman" HorizontalAlignment="Left" VerticalAlignment="Center" Text="My Hotel"/>
             <Label Content="Назва" Canvas.Left="61" Canvas.Top="50" FontFamily="Times New Roman" FontSize="16"/>
             <Label Content="Адреса" Canvas.Left="350" Canvas.Top="50" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <TextBox x:Name="TxtBx_Hotel_Address" Canvas.Left="415" TextWrapping="Wrap" Canvas.Top="54" Width="233" FontSize="16" FontFamily="Times New Roman" HorizontalAlignment="Left" VerticalAlignment="Center" Text="4, Schevchenko st., Lviv, Ukraine"/>
-            <Button x:Name="Btn_Hotel_Create" Content="Створити" Canvas.Left="668" Canvas.Top="43" FontSize="16" FontWeight="Bold" HorizontalAlignment="Left" Height="42" VerticalAlignment="Center" Width="103" Click="Btn_Hotel_Create_Click"/>
+            <Button x:Name="Btn_Hotel_Create" Content="Створити" Canvas.Left="673" Canvas.Top="52" FontSize="16" FontWeight="Bold" HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Width="100" Click="Btn_Hotel_Create_Click"/>
 
         </Canvas>
         <Canvas x:Name="Canvas_Room" Margin="0,25,0,0" IsVisibleChanged="Canvas_Room_IsVisibleChanged" Visibility="Hidden">
-            <TextBox x:Name="TxtBx_Room_RentCost" Canvas.Left="154" TextWrapping="Wrap" Canvas.Top="320" Width="233" FontSize="16" FontFamily="Times New Roman" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <Label Content="Ціна оренди,&#xD;&#xA;$/день" Canvas.Left="51" Canvas.Top="307" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <Button x:Name="Btn_Room_Add" Content="Додати нову кімнату" Canvas.Left="154" Canvas.Top="361" FontSize="16" FontWeight="Bold" Height="42" Width="233" HorizontalAlignment="Center" VerticalAlignment="Center" Click="Btn_Room_Add_Click"/>
-            <Label Content="Кімнати готелю" HorizontalContentAlignment="Center" Canvas.Left="225" Width="350" FontSize="20" FontFamily="Times New Roman" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Top="10"/>
-            <DataGrid x:Name="Dtgrd_Room" Height="220" Width="760" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalAlignment="Center" Canvas.Top="48" VerticalAlignment="Top" Canvas.Left="20" FontSize="16"/>
-            <Label Content="Тип кімнати" Canvas.Left="416" Canvas.Top="314" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="0.892,-1.442" Width="96"/>
-            <ListBox x:Name="LstBx_Room" Height="32" Width="214" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalAlignment="Left" Canvas.Top="314" VerticalAlignment="Center" Canvas.Left="517" FontSize="16"/>
-            <Label Content="Додати нову кімнату" HorizontalContentAlignment="Center" Canvas.Left="225" Width="350" FontSize="20" FontFamily="Times New Roman" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Top="273"/>
-            <Button x:Name="Btn_Room_Copy" Content="Скопіювати обрану кімнату" Canvas.Left="416" Canvas.Top="361" FontSize="16" FontWeight="Bold" Height="42" Width="242" HorizontalAlignment="Left" VerticalAlignment="Center" Click="Btn_Room_Copy_Click"/>
+            <TextBox x:Name="TxtBx_Room_RentCost" Canvas.Left="213" TextWrapping="Wrap" Canvas.Top="424" Width="233" FontSize="16" FontFamily="Times New Roman" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Label Content="Ціна оренди,&#xD;&#xA;$/день" Canvas.Left="110" Canvas.Top="411" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Button x:Name="Btn_Room_Add" Content="Додати нову кімнату" Canvas.Left="213" Canvas.Top="465" FontSize="16" FontWeight="Bold" Height="42" Width="233" HorizontalAlignment="Left" VerticalAlignment="Top" Click="Btn_Room_Add_Click"/>
+            <Label Content="Кімнати готелю" HorizontalContentAlignment="Center" Canvas.Left="285" Width="350" FontSize="20" FontFamily="Times New Roman" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Top="10"/>
+            <DataGrid x:Name="Dtgrd_Room" Height="220" Width="760" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalAlignment="Center" Canvas.Top="60" VerticalAlignment="Top" Canvas.Left="80" FontSize="16"/>
+            <Label Content="Тип кімнати" Canvas.Left="475" Canvas.Top="418" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.892,-1.442" Width="96"/>
+            <ListBox x:Name="LstBx_Room" Height="32" Width="214" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalAlignment="Left" Canvas.Top="418" VerticalAlignment="Top" Canvas.Left="576" FontSize="16"/>
+            <Label Content="Додати нову кімнату" HorizontalContentAlignment="Center" Canvas.Left="284" Width="350" FontSize="20" FontFamily="Times New Roman" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Top="377"/>
+            <Button x:Name="Btn_Room_Copy" Content="Скопіювати обрану кімнату" Canvas.Left="475" Canvas.Top="465" FontSize="16" FontWeight="Bold" Height="42" Width="242" HorizontalAlignment="Left" VerticalAlignment="Top" Click="Btn_Room_Copy_Click"/>
+            <Label Content="Сортувати список кімнат за:" HorizontalContentAlignment="Center" Canvas.Left="284" Width="350" FontSize="20" FontFamily="Times New Roman" Canvas.Top="304" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <RadioButton x:Name="RdBtn_Room_Sort_ID" Content="ID" Canvas.Left="339" Canvas.Top="342" FontSize="16" Checked="RdBtn_Room_Sort_Checked" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="True"/>
+            <RadioButton x:Name="RdBtn_Room_Sort_Cost" Content="Ціною" Canvas.Left="426" Canvas.Top="342" FontSize="16" Checked="RdBtn_Room_Sort_Checked" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <RadioButton x:Name="RdBtn_Room_Sort_Type" Content="Типом" Canvas.Left="523" Canvas.Top="342" FontSize="16" Checked="RdBtn_Room_Sort_Checked" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         </Canvas>
-        <Canvas x:Name="Canvas_Tenant" Margin="0,25,0,0" IsVisibleChanged="Canvas_Tenant_IsVisibleChanged" Visibility="Hidden">
+        <Canvas x:Name="Canvas_Tenant" Margin="58,25,58,0" IsVisibleChanged="Canvas_Tenant_IsVisibleChanged" Visibility="Hidden">
             <TextBox x:Name="TxtBx_Tenant_LastName" Canvas.Left="117" TextWrapping="Wrap" Canvas.Top="215" Width="157" FontSize="16" FontFamily="Times New Roman" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <Label Content="Прізвище" Canvas.Left="36" Canvas.Top="209" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <Button x:Name="Btn_Tenant_Register" Content="Зареєструвати нового жильця" Canvas.Left="268" Canvas.Top="253" FontSize="16" FontWeight="Bold" Height="42" Width="258" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="0.502,0.22" Click="Btn_Tenant_Register_Click"/>
@@ -95,7 +116,7 @@ FontFamily="Arial" HorizontalAlignment="Left" VerticalAlignment="Top" Height="25
             <Label x:Name="Lbl_Tenant_Name" Content="Керування балансом жильця" HorizontalContentAlignment="Center" Canvas.Left="36" Width="744" FontSize="20" FontFamily="Times New Roman" Canvas.Top="308" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <DatePicker x:Name="Dtpckr_Tenant_Birthdate" Canvas.Left="610" Canvas.Top="213"   />
         </Canvas>
-        <Canvas x:Name="Canvas_Staff" Margin="0,25,0,0" IsVisibleChanged="Canvas_Staff_IsVisibleChanged">
+        <Canvas x:Name="Canvas_Staff" Margin="60,25,60,0" IsVisibleChanged="Canvas_Staff_IsVisibleChanged" Visibility="Hidden">
             <TextBox x:Name="TxtBx_Staff_LastName" Canvas.Left="136" TextWrapping="Wrap" Canvas.Top="213" Width="157" FontSize="16" FontFamily="Times New Roman" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <Label Content="Прізвище" Canvas.Left="36" Canvas.Top="209" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <Button x:Name="Btn_Staff_Register" Content="Зареєструвати нового робітника" Canvas.Left="504" Canvas.Top="280" FontSize="16" FontWeight="Bold" Height="42" Width="258" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="0.502,0.22" Click="Btn_Staff_Register_Click"/>
@@ -119,22 +140,26 @@ FontFamily="Arial" HorizontalAlignment="Left" VerticalAlignment="Top" Height="25
             <DatePicker x:Name="Dtpckr_Staff_Birthdate" Canvas.Left="504" Canvas.Top="211" Width="158" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <Button x:Name="Btn_Staff_Fire" Content="Звільнити робітника" Canvas.Left="517" Canvas.Top="356" FontSize="16" FontWeight="Bold" Height="27" Width="220" HorizontalAlignment="Center" VerticalAlignment="Center" Click="Btn_Staff_Fire_Click"/>
         </Canvas>
-        <Canvas x:Name="Canvas_Reservation" Margin="0,25,0,0" IsVisibleChanged="Canvas_Reservation_IsVisibleChanged" Visibility="Hidden">
-            <TextBox x:Name="TxtBx_Reservation_Tenant" Canvas.Left="152" TextWrapping="Wrap" Canvas.Top="298" Width="133" FontSize="16" FontFamily="Times New Roman" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <Label Content="ID жильця" Canvas.Left="65" Canvas.Top="292" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <Button x:Name="Btn_Reservation_Register" Content="Забронювати" Canvas.Left="152" Canvas.Top="372" FontSize="16" FontWeight="Bold" Height="42" Width="232" HorizontalAlignment="Left" VerticalAlignment="Center" Click="Btn_Reservation_Register_Click"/>
-            <Label Content="Активні бронювання" HorizontalContentAlignment="Center" Canvas.Left="225" Width="350" FontSize="20" FontFamily="Times New Roman" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Top="10"/>
-            <DataGrid x:Name="Dtgrd_Reservation" Height="192" Width="760" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalAlignment="Center" Canvas.Top="48" VerticalAlignment="Top" Canvas.Left="20"/>
-            <Label Content="Забронювати кімнату" HorizontalContentAlignment="Center" Canvas.Left="225" Width="350" FontSize="20" FontFamily="Times New Roman" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Top="245"/>
-            <TextBox x:Name="TxtBx_Reservation_Room" Canvas.Left="152" TextWrapping="Wrap" Canvas.Top="323" Width="133" FontSize="16" FontFamily="Times New Roman" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <Label Content="ID кімнати" Canvas.Left="65" Canvas.Top="317" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <Label Content="Початок бронювання" Canvas.Left="351" Canvas.Top="292" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" Width="173"/>
-            <Label Content="Кінець бронювання" Canvas.Left="351" Canvas.Top="317" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" Width="173"/>
-            <DatePicker x:Name="Dtpckr_Reservation_Start" Canvas.Left="538" Canvas.Top="296" HorizontalAlignment="Left" VerticalAlignment="Center" Width="199" />
-            <DatePicker x:Name="Dtpckr_Reservation_End" Canvas.Left="538" Canvas.Top="319" Width="199" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Button x:Name="Btn_Reservation_Cancel" Content="Скасувати бронювання" Canvas.Left="438" Canvas.Top="372" FontSize="16" FontWeight="Bold" Height="42" Width="232" HorizontalAlignment="Left" VerticalAlignment="Center" Click="Btn_Reservation_Cancel_Click"/>
+        <Canvas x:Name="Canvas_Reservation" Margin="61,25,58,0" IsVisibleChanged="Canvas_Reservation_IsVisibleChanged" Visibility="Hidden">
+            <TextBox x:Name="TxtBx_Reservation_Tenant" Canvas.Left="168" TextWrapping="Wrap" Canvas.Top="421" Width="133" FontSize="16" FontFamily="Times New Roman" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden"/>
+            <Label Content="ID жильця" Canvas.Left="81" Canvas.Top="415" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden"/>
+            <Button x:Name="Btn_Reservation_Register" Content="Забронювати" Canvas.Left="481" Canvas.Top="472" FontSize="16" FontWeight="Bold" Height="42" Width="232" HorizontalAlignment="Center" VerticalAlignment="Top" Click="Btn_Reservation_Register_Click"/>
+            <Label Content="Активні бронювання" HorizontalContentAlignment="Center" Canvas.Left="225" Width="350" FontSize="20" FontFamily="Times New Roman" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <DataGrid x:Name="Dtgrd_Reservation" Height="122" Width="760" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalAlignment="Center" Canvas.Top="38" VerticalAlignment="Top" Canvas.Left="20"/>
+            <Label Content="Забронювати кімнату" HorizontalContentAlignment="Center" Canvas.Left="226" Width="350" FontSize="20" FontFamily="Times New Roman" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Top="433"/>
+            <TextBox x:Name="TxtBx_Reservation_Room" Canvas.Left="168" TextWrapping="Wrap" Canvas.Top="446" Width="133" FontSize="16" FontFamily="Times New Roman" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden"/>
+            <Label Content="ID кімнати" Canvas.Left="81" Canvas.Top="440" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden"/>
+            <Label Content="Початок бронювання" Canvas.Left="20" Canvas.Top="466" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Top" Width="173"/>
+            <Label Content="Кінець бронювання" Canvas.Left="20" Canvas.Top="491" FontFamily="Times New Roman" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Top" Width="173"/>
+            <DatePicker x:Name="Dtpckr_Reservation_Start" Canvas.Left="207" Canvas.Top="470" HorizontalAlignment="Center" VerticalAlignment="Top" Width="199" />
+            <DatePicker x:Name="Dtpckr_Reservation_End" Canvas.Left="207" Canvas.Top="493" Width="199" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Button x:Name="Btn_Reservation_Cancel" Content="Скасувати бронювання" Canvas.Left="284" Canvas.Top="172" FontSize="16" FontWeight="Bold" Height="42" Width="232" HorizontalAlignment="Left" VerticalAlignment="Top" Click="Btn_Reservation_Cancel_Click"/>
+            <DataGrid x:Name="Dtgrd_Reservation_Tenants" Height="178" Width="362" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Top="250" Canvas.Left="20" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <DataGrid x:Name="Dtgrd_Reservation_Rooms" Height="178" Width="367" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Top="250" Canvas.Left="413" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Label Content="Жильці готелю" HorizontalContentAlignment="Center" Canvas.Left="32" Width="350" FontSize="20" FontFamily="Times New Roman" Canvas.Top="214" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Label Content="Кімнати готелю" HorizontalContentAlignment="Center" Canvas.Left="422" Width="350" FontSize="20" FontFamily="Times New Roman" Canvas.Top="214" HorizontalAlignment="Center" VerticalAlignment="Top"/>
         </Canvas>
-        <Canvas x:Name="Canvas_Clock" Margin="0,25,0,0" IsVisibleChanged="Canvas_Clock_IsVisibleChanged" Visibility="Hidden">
+        <Canvas x:Name="Canvas_Clock" Margin="68,25,68,0" IsVisibleChanged="Canvas_Clock_IsVisibleChanged" Visibility="Hidden">
             <TextBox x:Name="TxtBx_Clock_CurrentTime" Canvas.Left="382" TextWrapping="Wrap" Canvas.Top="69" Width="195" FontSize="20" FontFamily="Times New Roman" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" IsReadOnly="True"/>
             <Label Content="Поточний час:" Canvas.Left="225" Canvas.Top="65" FontFamily="Times New Roman" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" Width="152"/>
             <Label Content="Налаштування часу" HorizontalContentAlignment="Center" Canvas.Left="225" Width="350" FontSize="20" FontFamily="Times New Roman" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Top="10"/>
