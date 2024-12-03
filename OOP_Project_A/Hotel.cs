@@ -1,18 +1,26 @@
 ﻿
+using OOP_Practice;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
+
+
 
 namespace OOP_Practice
 {
-    
+    public delegate void DateHandler(DateTime date);
     public class Hotel
     {
         private string name;
         private string address;
+        private DateTime lastDayCheck;
+        private DateTime lastWeekCheck;
+        private DateTime lastMonthCheck;
         private DateTime lastWithdrawal;
+
         public string Name
         {
             get
@@ -72,9 +80,9 @@ namespace OOP_Practice
                     if ((c < 'a' || c > 'z') && (c < 'A' || c > 'Z') && c != ' ')
                         throw new ArgumentException("Назва країни містить непідтримувані символи!");
                 address = value;
-                //address = value;
             }
         }
+
         private List<Person> people { get; set; }
         public List<Tenant> Tenants { 
             get 
@@ -106,7 +114,23 @@ namespace OOP_Practice
                 lastWithdrawal = value;
             }
         }
+        public DateTime LastDayCheck
+        {
+            get => lastDayCheck;
+        }
+        public DateTime LastWeekCheck
+        {
+            get => lastWeekCheck;
+        }
+        public DateTime LastMonthCheck
+        {
+            get => lastMonthCheck;
+        }
+        public event DateHandler DayPassed;
+        public event DateHandler WeekPassed;
+        public event DateHandler MonthPassed;
 
+        public static Action<string,string> Message;
         public Hotel(string name, string address)
         {
             Name = name;
@@ -118,7 +142,12 @@ namespace OOP_Practice
             Reservations = new List<Reservation>();
           //  Staff = new List<StaffMember>();
             Account = new Account();
-
+            lastDayCheck = Clock.Now;
+            lastWeekCheck = Clock.Now;
+            lastMonthCheck = Clock.Now;
+            DayPassed = DayPassedDefault;
+            ChooseRentInterval(0);
+            ChooseSalaryInterval(0);
         }
 
         public List<Room> GetAvailableRooms()
@@ -161,34 +190,35 @@ namespace OOP_Practice
             return result;
 
         }
-        public double GetExpectedTotalSalary()
+        public double GetExpectedTotalSalary(DateTime date)
         {
             List<StaffMember> activeWorkers = Staff.FindAll(x => !x.IsFired);
             double sum = 0;
             foreach (StaffMember worker in activeWorkers)
-                sum += worker.DailyRate * Math.Floor((Clock.Now - worker.LastSalaryPay).TotalDays);
+                sum += worker.DailyRate * Math.Floor((date - worker.LastSalaryPay).TotalDays);
             return sum;
         }
         public void BookARoom(int tenantId, int roomId, DateTime dateStart, DateTime dateEnd)
         {
-            bool tenantRegistered = Tenants.Find(x => x.ID == tenantId) is Tenant;
-            if (!tenantRegistered)
+            Tenant tenant = Tenants.Find(x => x.ID == tenantId);
+            if (!(tenant is Tenant))
                 throw new ArgumentException("Жильця готелю з цим ідентифікаційним номером ще не зареєстровано!");
-            bool roomRegistered = Rooms.Find(x => x.ID == roomId) is Room;
-            if (!roomRegistered)
+           Room room = Rooms.Find(x => x.ID == roomId);
+            if (!(room is Room))
                 throw new ArgumentException("Кімнати готелю з цим ідентифікаційним номером ще не зареєстровано!");
-            if (GetAvailableRoomsForDates(dateStart, dateEnd).Find(room => room.ID == roomId) == null)
+            if (GetAvailableRoomsForDates(dateStart, dateEnd).Find(room1 => room1.ID == roomId) == null)
                 throw new Exception("На обраний час кімнату вже було заброньовано!");
             Reservation newReservation = new Reservation(tenantId,roomId,dateStart,dateEnd);
             Reservations.Add(newReservation);
+            Message?.Invoke($"Бронювання кімнати номер {room.ID} готелю {Name} на ім'я {tenant} було успішно збережено!", "Успіх!");
         }
         public void CancelRoomReservation(int tenantId, int roomId)
         {
-            bool tenantRegistered = Tenants.Find(x => x.ID == tenantId) is Tenant;
-            if (!tenantRegistered)
+            Tenant tenant = Tenants.Find(x => x.ID == tenantId);
+            if (!(tenant is Tenant))
                 throw new KeyNotFoundException("Жильця готелю з цим ідентифікаційним номером ще не зареєстровано!");
-            bool roomRegistered = Rooms.Find(x => x.ID == roomId) is Room;
-            if (!roomRegistered)
+            Room room = Rooms.Find(x => x.ID == roomId);
+            if (!(room is Room))
                 throw new KeyNotFoundException("Кімнати готелю з цим ідентифікаційним номером ще не зареєстровано!");
 
             List<Reservation> reservations = Reservations.FindAll(x => x.TenantID == tenantId && x.RoomID == roomId && x.IsDeleted == false);
@@ -196,8 +226,15 @@ namespace OOP_Practice
                 throw new Exception($"Жилець під номером {tenantId} не має активного бронювання кімнати {roomId}");
             for (int i = 0; i < reservations.Count; i++)
                 reservations[i].IsDeleted = true;
+            Message?.Invoke($"Бронювання кімнати номер {room.ID} готелю {Name} на ім'я {tenant} було успішно скасовано!", "Успіх!");
         }
-
+        public void CancelRoomReservation(Reservation book)
+        {
+            if (!Reservations.FindAll(x => x.IsDeleted == false).Contains(book))
+                throw new Exception("Такого запису не існує у системі готелю!");
+            book.IsDeleted = true;
+            Message?.Invoke($"Бронювання кімнати номер {book.RoomID} готелю {Name} на ім'я {book.TenantID} було успішно скасовано!", "Успіх!");
+        }
         public void RegisterTenant(string firstName, string lastName, DateTime birthDate)
         {
             bool tenantRegistered = Tenants.Find(x => x.FirstName == firstName && x.LastName == lastName && x.BirthDate == birthDate) is Tenant;
@@ -205,6 +242,7 @@ namespace OOP_Practice
                 throw new ArgumentException("Жильця готелю з цими даними вже зареєстровано!");
             Person newTenant = new Tenant(firstName, lastName, birthDate);
             people.Add(newTenant);
+            Message?.Invoke($"{newTenant} було успішно додано до списку жильців готелю {Name}","Успіх!");
         }
         public void RegisterTenant(Tenant tenant)
         {
@@ -212,6 +250,7 @@ namespace OOP_Practice
             if (tenantRegistered)
                 throw new ArgumentException("Жильця готелю з цим ідентифікаційним номером вже зареєстровано!");
             people.Add(tenant);
+            Message?.Invoke($"{tenant} було успішно додано до списку жильців готелю {Name}", "Успіх!");
         }
 
         public void RegisterNewRoom(Room room)
@@ -220,6 +259,7 @@ namespace OOP_Practice
             if (roomRegistered)
                 throw new ArgumentException("Кімнату готелю з цим ідентифікаційним номером вже зареєстровано!");
             Rooms.Add(room);
+            Message?.Invoke($"Кімнату було успішно додано до готелю {Name}", "Успіх!");
         }
 
         public void HireStaff(StaffMember staff)
@@ -228,6 +268,7 @@ namespace OOP_Practice
             if (staffRegistered)
                 throw new Exception("Працівника готелю з цим ідентифікаційним номером вже зареєстровано!");
             people.Add(staff);
+            Message?.Invoke($"{staff} було успішно додано до списку робітників готелю {Name}", "Успіх!");
         }
         public void HireStaff(string firstName, string lastName, DateTime birthDate, Job job, double salary)
         {
@@ -236,6 +277,7 @@ namespace OOP_Practice
                 throw new ArgumentException("Робітника готелю з цими даними вже зареєстровано!");
             StaffMember staff = new StaffMember(firstName, lastName, birthDate,job,salary);
             people.Add(staff);
+            Message?.Invoke($"{staff} було успішно додано до списку робітників готелю {Name}", "Успіх!");
         }
         public void FireStaff(int ID)
         {
@@ -243,13 +285,14 @@ namespace OOP_Practice
             if (!(staff is StaffMember))
                 throw new Exception("Працівника готелю з цим ідентифікаційним номером не зареєстровано!");
             staff.IsFired = true;
+            Message?.Invoke($"{staff} було успішно видалено зі списку робітників готелю {Name}", "Успіх!");
         }
-        public List<Reservation> WithdrawRoomRent()
+        public void WithdrawRoomRent(DateTime date0)
         {
-            if (Clock.Now < LastRentWithdrawal.AddDays(1))
-                throw new Exception("Сьогодні орендна плата вже була знята!");
+            if (date0 < LastRentWithdrawal.AddDays(1))
+                Message?.Invoke("Сьогодні орендна плата вже була знята!", "Помилка!");
             List<Reservation> cancelledReservations = new List<Reservation>();
-            for (int offset = 1; offset <= (Clock.Now-LastRentWithdrawal).TotalDays; offset++)
+            for (int offset = 1; offset <= (date0-LastRentWithdrawal).TotalDays; offset++)
             {
                 DateTime date = LastRentWithdrawal.AddDays(offset);
                 List<Reservation> activeReservations = Reservations.FindAll(book => book.IsActive(date) && !book.IsDeleted);
@@ -271,27 +314,114 @@ namespace OOP_Practice
                 }
                 cancelledReservations.AddRange(activeReservations.FindAll(book => book.IsDeleted));
             }
-            LastRentWithdrawal = Clock.Now;
-            return cancelledReservations;
+            LastRentWithdrawal = date0;
+            if (cancelledReservations.Count > 0)
+                Message?.Invoke($"Через недостаток грошей на рахунках клієнтів, було скасовано {cancelledReservations.Count} оренд(и)", "Увага!");
+            else
+                Message?.Invoke("Орендна плата була успішно знята у повному обсязі!", "Успіх!");
+           // return cancelledReservations;
         }
-        public void PayStaffSalaries()
+        public void PayStaffSalaries(DateTime date)
         {
 
             List<StaffMember> activeWorkers = Staff.FindAll(x => !x.IsFired);
             if (activeWorkers.Count == 0)
-                throw new Exception("У готелі наразі ніхто не працює");
-            double sum = GetExpectedTotalSalary();
+                Message?.Invoke("У готелі наразі ніхто не працює","Помилка!");
+            double currentBalance = Account.Balance;
+            double sum = GetExpectedTotalSalary(date);
             double availableFundsCoefficient = Math.Min(Account.Balance / sum, 1);
             for (int i = 0; i < activeWorkers.Count; i++)
             {
                 StaffMember worker = activeWorkers[i];
-                double percent = (worker.DailyRate * Math.Floor((Clock.Now - worker.LastSalaryPay).TotalDays) / sum);
+                double percent = (worker.DailyRate * Math.Floor((date - worker.LastSalaryPay).TotalDays) / sum);
                 double coveredDays = Math.Floor(percent * availableFundsCoefficient* sum / worker.DailyRate);
                 if (coveredDays != 0&&Account.Withdraw(coveredDays * worker.DailyRate))
                 {
                     worker.Account.Deposit(coveredDays * worker.DailyRate);
                     worker.LastSalaryPay = worker.LastSalaryPay.AddDays(coveredDays);
                 }
+            }
+            if (Account.Balance != currentBalance - sum)
+            {
+               Message?.Invoke($"Через недостаток грошей на рахунку готелю, заробітну плату було виплачено не в повному обсязі!", "Повідомлення");
+            }
+            else
+            {
+                Message?.Invoke("Заробітну плату було успішно сплачено!", "Повідомлення");
+            }
+        }
+
+        private void DayPassedDefault(DateTime date)
+        {
+            Message?.Invoke($"Настав новий день", "Календар");
+            if ((date-lastWeekCheck).TotalDays >= 7)
+            {
+                Message?.Invoke($"Настав новий тиждень", "Календар");
+                WeekPassed?.Invoke(date);
+                lastWeekCheck = date;
+            }
+            if ((date.Month > lastMonthCheck.Month || date.Year > lastMonthCheck.Year) && date.Day >= lastMonthCheck.Day)
+            {
+                Message?.Invoke($"Настав новий місяць", "Календар");
+                MonthPassed?.Invoke(date);
+                lastMonthCheck = date;
+            }
+            lastDayCheck = date;
+        }
+
+        public void CheckTime()
+        {
+            int daysPassed = (int)Math.Floor((Clock.Now-lastDayCheck).TotalDays);
+            if (daysPassed <= 0)
+                throw new Exception("Сьогодні вже були виконані всі перевірки!");
+            for (int i = 0; i < daysPassed; i++)
+            {
+                DayPassed?.Invoke(lastDayCheck.AddDays(1));
+            }
+            if (daysPassed == 1)
+                Message?.Invoke($"Було успішно виконано всі перевірки за сьогодні", "Успіх!");
+            else
+                Message?.Invoke($"Було успішно виконано всі перевірки за останні {daysPassed} днів", "Успіх!");
+        }
+
+       
+        public void ChooseRentInterval(int choiceNumber)
+        {
+            DayPassed -= WithdrawRoomRent;
+            WeekPassed -= WithdrawRoomRent;
+            MonthPassed -= WithdrawRoomRent;
+            switch (choiceNumber)
+            {
+                case 0:
+                    DayPassed += WithdrawRoomRent;
+                    break;
+                case 1:
+                    WeekPassed += WithdrawRoomRent;
+                    break;
+                case 2:
+                    MonthPassed += WithdrawRoomRent;
+                    break;
+                default: throw new ArgumentException("Невірно заданий номер!");
+
+            }
+        }
+        public void ChooseSalaryInterval(int choiceNumber)
+        {
+            DayPassed -= PayStaffSalaries;
+            WeekPassed -= PayStaffSalaries;
+            MonthPassed -= PayStaffSalaries;
+            switch (choiceNumber)
+            {
+                case 0:
+                    DayPassed += PayStaffSalaries;
+                    break;
+                case 1:
+                    WeekPassed += PayStaffSalaries;
+                    break;
+                case 2:
+                    MonthPassed += PayStaffSalaries;
+                    break;
+                default: throw new ArgumentException("Невірно заданий номер!");
             }
         }
     }

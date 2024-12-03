@@ -488,15 +488,16 @@ namespace TestProject
             hotel.BookARoom(tenant1.ID, room3.ID, date1, date2);
             hotel.CancelRoomReservation(tenant1.ID, room3.ID);
             //Act
-            List<Reservation> cancelledReservations = hotel.WithdrawRoomRent();
+            // List<Reservation> cancelledReservations = hotel.WithdrawRoomRent();
+            hotel.WithdrawRoomRent(Clock.Now);
             //Assert
             Assert.AreEqual(0, tenant1.Account.Balance);
             Assert.AreEqual(15, tenant2.Account.Balance);
             Assert.AreEqual(0, tenant3.Account.Balance);
             Assert.AreEqual(15, hotel.Account.Balance);
             Assert.IsTrue(hotel.Reservations.Find(x => x.TenantID == tenant3.ID).IsDeleted);
-            Assert.AreEqual(1,cancelledReservations.Count);
-            Assert.AreEqual(tenant3.ID, cancelledReservations[0].TenantID);
+           // Assert.AreEqual(1,cancelledReservations.Count);
+            //Assert.AreEqual(tenant3.ID, cancelledReservations[0].TenantID);
             Assert.AreEqual(0, (Clock.Now - hotel.LastRentWithdrawal).TotalSeconds, 0.01);
         }
         [TestMethod]
@@ -542,15 +543,16 @@ namespace TestProject
 
             Clock.Offset = Clock.Offset.Add(new TimeSpan(2, 0, 0, 0));
             //Act
-            List<Reservation> cancelledReservations = hotel.WithdrawRoomRent();
+          //  List<Reservation> cancelledReservations = hotel.WithdrawRoomRent(Clock.Now);
+            hotel.WithdrawRoomRent(Clock.Now);
             //Assert
             Assert.AreEqual(0, tenant1.Account.Balance);
             Assert.AreEqual(15, tenant2.Account.Balance);
             Assert.AreEqual(0, tenant3.Account.Balance);
             Assert.AreEqual(45, hotel.Account.Balance);
             Assert.IsTrue(hotel.Reservations.Find(x => x.TenantID == tenant3.ID).IsDeleted);
-            Assert.AreEqual(1, cancelledReservations.Count);
-            Assert.AreEqual(tenant3.ID, cancelledReservations[0].TenantID);
+           // Assert.AreEqual(1, cancelledReservations.Count);
+           // Assert.AreEqual(tenant3.ID, cancelledReservations[0].TenantID);
             Assert.AreEqual(0, (Clock.Now - hotel.LastRentWithdrawal).TotalSeconds, 0.01);
             Clock.Offset = TimeSpan.Zero;
         }
@@ -595,16 +597,17 @@ namespace TestProject
             hotel.BookARoom(tenant1.ID, room3.ID, date1, date2);
             hotel.CancelRoomReservation(tenant1.ID, room3.ID);
             //Act
-            List<Reservation> cancelledReservations = hotel.WithdrawRoomRent();
+            // List<Reservation> cancelledReservations = hotel.WithdrawRoomRent();
+            hotel.WithdrawRoomRent(Clock.Now);
             //Assert
-            Assert.ThrowsException<Exception>(() => hotel.WithdrawRoomRent());
+            Assert.ThrowsException<Exception>(() => hotel.WithdrawRoomRent(Clock.Now));
             Assert.AreEqual(0, tenant1.Account.Balance);
             Assert.AreEqual(15, tenant2.Account.Balance);
             Assert.AreEqual(0, tenant3.Account.Balance);
             Assert.AreEqual(15, hotel.Account.Balance);
             Assert.IsTrue(hotel.Reservations.Find(x => x.TenantID == tenant3.ID).IsDeleted);
-            Assert.AreEqual(1, cancelledReservations.Count);
-            Assert.AreEqual(tenant3.ID, cancelledReservations[0].TenantID);
+           // Assert.AreEqual(1, cancelledReservations.Count);
+          //  Assert.AreEqual(tenant3.ID, cancelledReservations[0].TenantID);
             Assert.AreEqual(0, (Clock.Now - hotel.LastRentWithdrawal).TotalSeconds, 0.01);
         }
         [TestMethod]
@@ -733,7 +736,7 @@ namespace TestProject
             hotel.HireStaff(staffMember2);
             hotel.Account.Deposit(200);
             //Act
-            hotel.PayStaffSalaries();
+            hotel.PayStaffSalaries(Clock.Now);
             //Assert
             Assert.AreEqual(75, hotel.Account.Balance);
             Assert.AreEqual(50,staffMember1.Account.Balance);
@@ -771,7 +774,7 @@ namespace TestProject
             hotel.HireStaff(staffMember2);
             hotel.Account.Deposit(200);
             //Act
-            hotel.PayStaffSalaries();
+            hotel.PayStaffSalaries(Clock.Now);
             //Assert
             Assert.AreEqual(0, hotel.Account.Balance);
             Assert.AreEqual(50, staffMember1.Account.Balance);
