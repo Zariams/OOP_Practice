@@ -291,6 +291,7 @@ namespace OOP_Practice
         {
             if (date0 < LastRentWithdrawal.AddDays(1))
                 Message?.Invoke("Сьогодні орендна плата вже була знята!", "Помилка!");
+            double balance = this.Account.Balance;
             List<Reservation> cancelledReservations = new List<Reservation>();
             for (int offset = 1; offset <= (date0-LastRentWithdrawal).TotalDays; offset++)
             {
@@ -317,13 +318,13 @@ namespace OOP_Practice
             LastRentWithdrawal = date0;
             if (cancelledReservations.Count > 0)
                 Message?.Invoke($"Через недостаток грошей на рахунках клієнтів, було скасовано {cancelledReservations.Count} оренд(и)", "Увага!");
-            else
+            else if (this.Account.Balance > balance)
                 Message?.Invoke("Орендна плата була успішно знята у повному обсязі!", "Успіх!");
            // return cancelledReservations;
         }
         public void PayStaffSalaries(DateTime date)
         {
-
+            date = date.AddHours(1);
             List<StaffMember> activeWorkers = Staff.FindAll(x => !x.IsFired);
             if (activeWorkers.Count == 0)
                 Message?.Invoke("У готелі наразі ніхто не працює","Помилка!");
@@ -390,6 +391,7 @@ namespace OOP_Practice
             DayPassed -= WithdrawRoomRent;
             WeekPassed -= WithdrawRoomRent;
             MonthPassed -= WithdrawRoomRent;
+            DayPassed -= DayPassedDefault;
             switch (choiceNumber)
             {
                 case 0:
@@ -404,12 +406,14 @@ namespace OOP_Practice
                 default: throw new ArgumentException("Невірно заданий номер!");
 
             }
+            DayPassed += DayPassedDefault;
         }
         public void ChooseSalaryInterval(int choiceNumber)
         {
             DayPassed -= PayStaffSalaries;
             WeekPassed -= PayStaffSalaries;
             MonthPassed -= PayStaffSalaries;
+            DayPassed -= DayPassedDefault;
             switch (choiceNumber)
             {
                 case 0:
@@ -423,6 +427,7 @@ namespace OOP_Practice
                     break;
                 default: throw new ArgumentException("Невірно заданий номер!");
             }
+            DayPassed += DayPassedDefault;
         }
     }
 }
