@@ -25,11 +25,17 @@ Reservation ..> Clock: Use
 Account --* AccountState
 Account ..|> IBankAccount
 Room --o RoomType
+Room --o Func
+Hotel --o Action
+Hotel --o DateHandler
 
 <<Enumeration>> AccountState
 <<Enumeration>> RoomType
 <<Interface>> IBankAccount
 <<Enumeration>> Job
+<<delegate>> Action
+<<delegate>> DateHandler
+<<delegate>> Func
 ```
 Рисунок 1 – Виявлення та визначення елементів предметної області та зв’язки між ними
 
@@ -51,6 +57,9 @@ Reservation ..> Clock: Use
 Account --* AccountState
 Account ..|> IBankAccount
 Room --o RoomType
+Room --o Func
+Hotel --o Action
+Hotel --o DateHandler
 
 <<Enumeration>> AccountState 
   AccountState: Active
@@ -98,9 +107,19 @@ class Hotel{
 + Staff: List<StaffMember>
 + Account: Account
 + LastFeeWithdrawal: DateTime
++ LastDayCheck: DateTime
++ LastWeekCheck: DateTime
++ LastMonthCheck: DateTime
++ DayPassed: event DateHandler
++ WeekPassed: event DateHandler
++ MonthPassed: event DateHandler
++ Message: Action<string,string>
 - name: string
 - address: string
 - lastWithdrawal: DateTime
+- lastDayCheck: DateTime
+- lastWeekCheck: DateTime
+- lastMonthCheck: DateTime
 }
  Hotel: + Hotel(string,string)
  Hotel: + BookARoom(int, int, DateTime, DateTime) void
@@ -115,16 +134,23 @@ Hotel: + HireStaff(string, string, DateTime, Job, double)  void
 Hotel: + FireStaff(int) void
 Hotel: + GetExpectedRentPay() double
 Hotel: + GetExpectedTotalSalary() double
- Hotel: + WithdrawDailyFee()  void
- Hotel: + PayStaffSalaries()  void
+Hotel: + WithdrawDailyFee()  void
+Hotel: + PayStaffSalaries()  void
+Hotel: + DayPassedDefault() void
+Hotel: + CheckTime() void
+Hotel: + ChooseRentInterval(int) void
+Hotel: + ChooseSalaryInterval(int) void
 
 class Room{
 + DailyCost: int
 + ID: int
 + Type: RoomType
-+ Counter : int
++ Counter: int
++ Comparison: Func<Room,Room,int>
 }
   Room: + Room(int, RoomType)
+ Room: + ChangeComparisonFunction(Func) void
+ Room: + ChooseComparisonFunction(int) void
 
 class Tenant{
 + BirthDate: DateTIme
@@ -170,6 +196,10 @@ class Account{
  Account: + Account()
 Account: + Withdraw(double) bool
 Account: + Deposit(double) void
+
+<<delegate>> Action
+<<delegate>> DateHandler
+<<delegate>> Func
 ```
 Рисунок 2 – Детальне проєктування елементів моделі предметної області
 
@@ -303,6 +333,7 @@ Account: + Deposit(double) void
 Поля:
 -	dailyCost – ціна оренди номеру за один день. Не може бути від’ємною;
 -	type – економічний клас номеру готелю;
+- Comparison – статичний делегат(функція), який використовується для порівняння двух об'єктів типу Room.
 
 Властивості: 
 -	DailyCost –  публічна властивість для поля dailyCost;
@@ -314,6 +345,7 @@ Account: + Deposit(double) void
 -	Room (int, RoomType) – конструктор класу, що призначає створеному об’єкту ціну оренди,  економічний клас та ідентифікаційний номер;
 -	Clone () – створює та повертає кімнату, яка ідентична данній;
 -	CompareTo(Room) – порівнює цю кімнату з іншою за ціною оренди.
+-	ChooseComparisonFunction – змінює метод, який використовує делегат Comparison
 
 **Reservation**
 
@@ -342,6 +374,13 @@ Account: + Deposit(double) void
 -	name – Назва готелю. Має складатися з 3-30 символів латинського алфавіту та може містити пробіли;
 -	address – Адреса готелю. Складається з 4 частин, розділених комою. Перша частина – номер будинку, має складатися з 1-4 цифр та літер латинського алфавіту. Друга частина – назва вулиці, має складатися з 5-20 латинських літер та може містити пробіли. Третя частина – назва міста, має містити 3-12 символів латинського алфавіту та може мати пробіли. Четверта частина – назва країни, має такі ж обмеження, що і назва міста;
 -	lastWithdral – Дата останнього взяття орендною плати з жильців готелю.
+- lastDayCheck – Дата останньої автоматичної щодневної виплати;
+- lastWeekCheck – Дата останньої автоматичної щотижневої виплати
+- lastMonthCheck – Дата останньої автоматичної щомісячної виплати
+- DayPassed – Подія, що спрацьовує кожен день. До цієї події призначаються виплати оренди та заробітної плати.
+- WeekPassed – Подія, що спрацьовує кожен тиждень. До цієї події призначаються виплати оренди та заробітної плати.
+- MonthPassed – Подія, що спрацьовує кожен місяць. До цієї події призначаються виплати оренди та заробітної плати.
+- Message – Делегат, призначений для виводу повідомлень.
 
 Властивості: 
 -	Name – публічна властивість для поля name;
@@ -352,6 +391,10 @@ Account: + Deposit(double) void
 -	Reservations – список записів бронювання кімнат;
 -	LastRentWithdrawal – публічна властивість для поля lastWithdrawal;
 -	Account – банківський рахунок готелю.
+-	LastWithdral –  публічна властивість для поля lastWithdrawal.
+- LastDayCheck –  публічна властивість для поля lastDayCheck.
+- LastWeekCheck –  публічна властивість для поля lastWeekCheck.
+- LastMonthCheck –  публічна властивість для поля lastMonthCheck.
 
 Методи:
 -	Hotel (string, string) – конструктор класу, що призначає створеному об’єкту назву та адресу.
@@ -367,3 +410,7 @@ Account: + Deposit(double) void
 - GetExpectedRentPay() – метод, що повертає загальну орендну плату, які жильці готелю мають сплатити, починаючи з дати останнього взяття орендної плати;
 - GetExpectedTotalSalary() – метод, що повертає загальну заробітну плату, яку готель має виплатити своїм робітникам.
 - PayStaffSalaries() – метод, що виплачує з рахунку готелю всім працівникам їх заробітну плату. Якщо грошей на рахунку недостатньо, кожному працівнику оплачується кількість робочих дней, пропорційна його заробітній платі та даті останньої виплати заробітної плати.
+- DayPassedDefault() – метод, який завжди викликається при спрацюванні події DayPassed. Якщо з останньої щотижневої виплати пройшло більше тижня, то запускає подію WeekPassed. Якщо з останньої щомісячної виплати пройшло більше місяця, то запускає подію MonthPassed.
+- CheckTime() – метод, що запускає подію DayPassed для кожного дня, починаючи з останньої дати щодневної виплати, і закінчуючи теперішнім часом.
+- ChooseRentInterval(int) – обирає, до якої події прив'язується виплата оренди: DayPassed, WeekPassed чи MonthPassed.
+- ChooseSalaryInterval(int) – обирає, до якої події прив'язується виплата заробітної плати: DayPassed, WeekPassed чи MonthPassed.
